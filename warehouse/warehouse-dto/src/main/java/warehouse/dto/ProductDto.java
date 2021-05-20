@@ -14,8 +14,8 @@ import lombok.ToString;
 public class ProductDto {
 	@Min(1)
 	public long productId;
-	@Min(1)
-	public long productNameId;
+	@NotNull
+	public String productName;
 	@Min(1)
 	public int  numberInContainer;
 }

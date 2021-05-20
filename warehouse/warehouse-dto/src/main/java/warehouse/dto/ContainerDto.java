@@ -1,6 +1,5 @@
 package warehouse.dto;
 
-import java.util.Date;
 
 import javax.validation.constraints.*;
 
@@ -16,11 +15,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class ContainerDto {
 	@Min(1)
-	public long contanerId;
-	@Min(1)
-	public long addressId;
+	public long containerId;
 	@NotNull
-	public Date appointmentAssignmentDate;
-	@Min(1)
-	public long productId;
+	public String address;
 }
