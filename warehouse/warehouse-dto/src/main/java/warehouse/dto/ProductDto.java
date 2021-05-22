@@ -12,8 +12,6 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class ProductDto {
-	@Min(1)
-	public long productId;
 	@NotNull
 	public String productName;
 	@Min(1)

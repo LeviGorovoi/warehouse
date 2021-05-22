@@ -14,8 +14,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class ContainerDto {
-	@Min(1)
-	public long containerId;
+
 	@NotNull
 	public String address;
 }

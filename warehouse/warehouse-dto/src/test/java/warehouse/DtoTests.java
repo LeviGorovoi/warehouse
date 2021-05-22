@@ -84,21 +84,15 @@ public class DtoTests {
 //	ContainerTests
 	@Test
 	void NormalContainerTest() throws JsonProcessingException, Exception{
-		TestController.containerExp = new ContainerDto(1, "123");
+		TestController.containerExp = new ContainerDto("123");
 		int statusExp = 200;
 		String HttpAddress = "/container";
 		makeTest(statusExp, HttpAddress, TestController.containerExp);
 	}
-	@Test
-	void wrongIdContainerTest() throws JsonProcessingException, Exception{
-		TestController.containerExp = new ContainerDto(-1,  "123");
-		int statusExp = 400;
-		String HttpAddress = "/container";
-		makeTest(statusExp, HttpAddress, TestController.containerExp);
-	}
+
 	@Test
 	void wrongAddressContainerTest() throws JsonProcessingException, Exception{
-		TestController.containerExp = new ContainerDto(1,  null);
+		TestController.containerExp = new ContainerDto(null);
 		int statusExp = 400;
 		String HttpAddress = "/container";
 		makeTest(statusExp, HttpAddress, TestController.containerExp);
@@ -108,28 +102,21 @@ public class DtoTests {
 //	productTests
 	@Test
 	void NormalProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new ProductDto(1,  "123", 1);
+		TestController.productExp = new ProductDto("123", 1);
 		int statusExp = 200;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
 	}
 	@Test
-	void wrongIdProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new ProductDto(-1,  "123", 1);
-		int statusExp = 400;
-		String HttpAddress = "/product";
-		makeTest(statusExp, HttpAddress, TestController.productExp);
-	}
-	@Test
 	void wrongNameProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new ProductDto(1,  null, 1);
+		TestController.productExp = new ProductDto(null, 1);
 		int statusExp = 400;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
 	}
 	@Test
 	void wrongNumberInContainerProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new ProductDto(1,  "123", -3);
+		TestController.productExp = new ProductDto("123", -3);
 		int statusExp = 400;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
