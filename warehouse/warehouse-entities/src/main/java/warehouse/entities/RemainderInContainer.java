@@ -7,7 +7,8 @@ import javax.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "remainders_in_containers", indexes = @Index(columnList = "container_id, product_id, receipt_date", unique = true))
+@Table(name = "remainders_in_containers",
+indexes = @Index(columnList = "container_id, product_id, receipt_date_time", unique = true))
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -27,7 +28,7 @@ public class RemainderInContainer {
 	@ManyToOne
 	@JoinColumn(name = "product_id")
 	Product product;
-	@Column(name = "receipt_date")
-	LocalDateTime receiptDate;
+	@Column(name = "receipt_date_time")
+	LocalDateTime receiptDateTime;
 	int remainder;
 }

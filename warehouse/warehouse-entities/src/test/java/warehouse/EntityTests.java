@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -34,7 +37,7 @@ public class EntityTests {
 		Container container = new Container("123", product);
 		containerRepo.save(container);
 		RemainderInContainer remainderInContainer = RemainderInContainer.builder().container(container)
-				.product(product).receiptDate(LocalDateTime.of(1920, 2, 3, 4, 0)).remainder(20).build();
+				.product(product).receiptDateTime(LocalDateTime.of(1920, 2, 3, 4, 0)).remainder(20).build();
 		remainderInContainerRepo.save(remainderInContainer);
 		List<RemainderInContainer> res = remainderInContainerRepo.findAll();
 		assertEquals(1, res.size());
@@ -43,10 +46,17 @@ public class EntityTests {
 		res = remainderInContainerRepo.findAll();
 		assertEquals(1, res.size());
 		RemainderInContainer remainderInContainer1 = RemainderInContainer.builder().container(container)
-				.product(product).receiptDate(LocalDateTime.of(1920, 3, 3, 4, 0)).remainder(20).build();
+				.product(product).receiptDateTime(LocalDateTime.of(1920, 3, 3, 4, 0)).remainder(20).build();
 		remainderInContainerRepo.save(remainderInContainer1);
 		res = remainderInContainerRepo.findAll();
 		assertEquals(2, res.size());
-		
+		RemainderInContainer remainderInContainer2 = RemainderInContainer.builder().container(container)
+				.product(product).receiptDateTime(LocalDateTime.of(1920, 3, 3, 4, 0)).remainder(20).build();
+//		JdbcSQLIntegrityConstraintViolationException
+		Throwable thrown = catchThrowable(()->remainderInContainerRepo.save(remainderInContainer2));
+		assertThat(thrown)
+		  .isInstanceOf(DataIntegrityViolationException.class)
+		  .hasMessageContaining("could not execute statement");
+
 	}
 }
