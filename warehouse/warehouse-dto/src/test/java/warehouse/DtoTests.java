@@ -33,7 +33,7 @@ public class DtoTests {
 	public static @RestController class TestController {
 		static ContainerDto containerExp;
 		static ProductDto productExp;
-		static TransportStockDto transportStockDtoExp;
+		static TransportSupplyDto transportSupplyDtoExp;
 		static InventoryDto inventoryExp;
 		static MovementDockDto movementDockDtoExp;
 		static OrderDto orderDtoExp;
@@ -49,8 +49,8 @@ public class DtoTests {
 		}
 
 		@PostMapping("/product/transportation/parameters")
-		void testProductTransportationParameters(@RequestBody @Valid TransportStockDto transportStockDto) {
-			assertEquals(transportStockDtoExp, transportStockDto);
+		void testProductTransportationParameters(@RequestBody @Valid TransportSupplyDto transportSupplyDto) {
+			assertEquals(transportSupplyDtoExp, transportSupplyDto);
 		}	
 		@PostMapping("/inventory")
 		void testProduct(@RequestBody @Valid InventoryDto inventory) {
@@ -123,27 +123,27 @@ public class DtoTests {
 	}
 
 //	*******************************************************************************************************
-//	transportStockDtoTests
+//	transportSupplyDtoTests
 	@Test
-	void NormalTransportStockDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportStockDtoExp = new TransportStockDto(Date.from(Instant.now()), 1, -1);
+	void NormalTransportSupplyDtoTest() throws JsonProcessingException, Exception{
+		TestController.transportSupplyDtoExp = new TransportSupplyDto(Date.from(Instant.now()), 1, -1);
 		int statusExp = 200;
 		String HttpAddress = "/product/transportation/parameters";
-		makeTest(statusExp, HttpAddress, TestController.transportStockDtoExp);
+		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
 	}
 	@Test
-	void wrongDateTransportStockDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportStockDtoExp = new TransportStockDto(null, 1, -1);
+	void wrongDateTransportSupplyDtoTest() throws JsonProcessingException, Exception{
+		TestController.transportSupplyDtoExp = new TransportSupplyDto(null, 1, -1);
 		int statusExp = 400;
 		String HttpAddress = "/product/transportation/parameters";
-		makeTest(statusExp, HttpAddress, TestController.transportStockDtoExp);
+		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
 	}
 	@Test
-	void wrongProductIdTransportStockDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportStockDtoExp = new TransportStockDto(Date.from(Instant.now()), -1, -1);
+	void wrongProductIdTransportSupplyDtoTest() throws JsonProcessingException, Exception{
+		TestController.transportSupplyDtoExp = new TransportSupplyDto(Date.from(Instant.now()), -1, -1);
 		int statusExp = 400;
 		String HttpAddress = "/product/transportation/parameters";
-		makeTest(statusExp, HttpAddress, TestController.transportStockDtoExp);
+		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
 	}
 //	*******************************************************************************************************
 //	inventoryTests

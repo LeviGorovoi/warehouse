@@ -14,7 +14,7 @@ import lombok.*;
 @Builder
 public class Product {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Exclude
 	@Column(name = "product_id")
 	long productId;
@@ -25,14 +25,14 @@ public class Product {
 	@Column(name = "number_in_container", nullable = false)
 	int numberInContainer;
 	@Setter
-	@Column(name = "transport_stock", nullable = true)
-	int transportStock;
+	@Column(name = "transport_supply", nullable = true)
+	int transportSupply;
 	@Setter
 	@Column(name = "irreducible_balance", nullable = true)
 	int irreducibleBalance;
 	
-	public Product (String productName, int numberInContainer, int transportStock, int irreducibleBalance) {
-		this(0, productName, numberInContainer, transportStock, irreducibleBalance);
+	public Product (String productName, int numberInContainer, int transportSupply, int irreducibleBalance) {
+		this(0, productName, numberInContainer, transportSupply, irreducibleBalance);
 	}
 	
 }

@@ -11,9 +11,9 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class TransportStockDto {
+public class TransportSupplyDto {
 	@NotNull
-	public Date transportStockAssignmentDate;
+	public Date transportSupplySettingDate;
 	@Min(1)
 	public long productId;
 	public int transportStock; // in days

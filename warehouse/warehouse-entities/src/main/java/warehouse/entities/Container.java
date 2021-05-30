@@ -17,7 +17,7 @@ import lombok.*;
 @Builder
 public class Container {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Exclude
 	@Column(name="container_id")
 	long containerId;

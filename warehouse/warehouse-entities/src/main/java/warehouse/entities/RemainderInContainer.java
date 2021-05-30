@@ -18,7 +18,7 @@ indexes = @Index(columnList = "container_id, product_id, receipt_date_time", uni
 @Builder
 public class RemainderInContainer {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Exclude
 	@Column(name = "remainder_id")
 	long remainderId;
