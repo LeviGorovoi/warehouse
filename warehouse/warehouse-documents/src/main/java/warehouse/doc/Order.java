@@ -16,12 +16,12 @@ import warehouse.dto.*;
 @Builder
 public class Order {
 	@Id
-	ObjectId orderId = null;
-	LocalDateTime orderOpeningDate;
-	LocalDateTime orderClosingDate;
-	long productId;
-	int orderAmount;
-	OrderStatusEnum orderStatus;
-	CreatingMethodEnum creatingMethod;
-	int operatorId;
+	private ObjectId orderId = null;
+	private LocalDateTime orderOpeningDate;
+	private LocalDateTime orderClosingDate;
+	private long productId;
+	private int orderAmount;
+	private OrderStatusEnum orderStatus;
+	private CreatingMethodEnum creatingMethod;
+	private int operatorId;
 }

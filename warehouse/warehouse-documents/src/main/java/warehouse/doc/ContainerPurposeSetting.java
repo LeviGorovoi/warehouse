@@ -15,13 +15,15 @@ import warehouse.dto.CreatingMethodEnum;
 @NoArgsConstructor
 @Getter
 @Builder
+@EqualsAndHashCode
 public class ContainerPurposeSetting {
 	@Id
-	ObjectId containerPurposeSettingId = null;
-	LocalDateTime documentDateTime;
-	LocalDateTime containerPurposeSettingDate;
-	long containerId;
-	long productId;
-	CreatingMethodEnum creatingMethod;
-	int operatorId;
+	@EqualsAndHashCode.Exclude
+	private ObjectId containerPurposeSettingId = null;
+	private LocalDateTime documentDateTime;
+	private LocalDateTime containerPurposeSettingDate;
+	private long containerId;
+	private long productId;
+	private CreatingMethodEnum creatingMethod;
+	private int operatorId;
 }

@@ -7,20 +7,21 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.*;
-import warehouse.dto.*;
 
-@Document(collection = "transport_supply_setting")
+import warehouse.dto.CreatingMethodEnum;
+
+@Document(collection = "role_setting")
 @AllArgsConstructor()
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Builder
-public class TransportSupplySetting {
+public class RoleSetting {
 	@Id
-	private ObjectId transportSupplySettingId = null;
+	private ObjectId roleSettingId = null;
 	private LocalDateTime documentDateTime;
-	private LocalDateTime containerPurposeSettingDate;
-	private long productId;
-	private int transportSupply;
+	private LocalDateTime roleSettingDate;
+	private long operatorId;
+	private long operatorRoleId;
 	private CreatingMethodEnum creatingMethod;
-	private int operatorId;
+	private int operatorManagerId;
 }

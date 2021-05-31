@@ -13,15 +13,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class MovementDockDto {
+public class MovementDocDto {
 	@Min(1)
 	public long productId;
 	@Min(1)
-	public int movementDockAmount;
+	public int movementDocAmount;
 	@NotNull
 	public  CreatingMethodEnum creatingMethod;
-	@NotNull
-	public DockTypeEnum dockType;
+	
 	
 
 }

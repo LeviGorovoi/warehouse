@@ -35,7 +35,7 @@ public class DtoTests {
 		static ProductDto productExp;
 		static TransportSupplyDto transportSupplyDtoExp;
 		static InventoryDto inventoryExp;
-		static MovementDockDto movementDockDtoExp;
+		static MovementDocDto movementDocDtoExp;
 		static OrderDto orderDtoExp;
 		static IrreducibleBalanceDto irreducibleBalanceExp;
 		
@@ -56,9 +56,9 @@ public class DtoTests {
 		void testProduct(@RequestBody @Valid InventoryDto inventory) {
 			assertEquals(inventoryExp, inventory);
 		}
-		@PostMapping("/movement/dock")
-		void testMovementDockDto(@RequestBody @Valid MovementDockDto movementDockDto) {
-			assertEquals(movementDockDtoExp, movementDockDto);
+		@PostMapping("/movement/doc")
+		void testMovementDocDto(@RequestBody @Valid MovementDocDto movementDocDto) {
+			assertEquals(movementDocDtoExp, movementDocDto);
 		}
 		@PostMapping("/order")
 		void testOrderDto(@RequestBody @Valid OrderDto orderDto) {
@@ -190,41 +190,41 @@ public class DtoTests {
 		makeTest(statusExp, HttpAddress, TestController.inventoryExp);
 	}
 //	*******************************************************************************************************	
-//	movementDockDtoTests
+//	movementDocDtoTests
 	@Test
-	void NormalMovementDockDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDockDtoExp = new MovementDockDto( 1, 1, CreatingMethodEnum.BY_OPERATOR, DockTypeEnum.WAREHOUSE_RECEIPT);
+	void NormalMovementDocDtoTest() throws JsonProcessingException, Exception{
+		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, CreatingMethodEnum.BY_OPERATOR);
 		int statusExp = 200;
-		String HttpAddress = "/movement/dock";
-		makeTest(statusExp, HttpAddress, TestController.movementDockDtoExp);
+		String HttpAddress = "/movement/doc";
+		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
 	@Test
-	void wrongProductIdMovementDockDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDockDtoExp = new MovementDockDto( -1, 1, CreatingMethodEnum.BY_OPERATOR, DockTypeEnum.WAREHOUSE_RECEIPT);
+	void wrongProductIdMovementDocDtoTest() throws JsonProcessingException, Exception{
+		TestController.movementDocDtoExp = new MovementDocDto( -1, 1, CreatingMethodEnum.BY_OPERATOR);
 		int statusExp = 400;
-		String HttpAddress = "/movement/dock";
-		makeTest(statusExp, HttpAddress, TestController.movementDockDtoExp);
+		String HttpAddress = "/movement/doc";
+		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
 	@Test
-	void wrongMovementDockAmountMovementDockDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDockDtoExp = new MovementDockDto( 1, -1, CreatingMethodEnum.BY_OPERATOR, DockTypeEnum.WAREHOUSE_RECEIPT);
+	void wrongMovementDocAmountMovementDocDtoTest() throws JsonProcessingException, Exception{
+		TestController.movementDocDtoExp = new MovementDocDto( 1, -1, CreatingMethodEnum.BY_OPERATOR);
 		int statusExp = 400;
-		String HttpAddress = "/movement/dock";
-		makeTest(statusExp, HttpAddress, TestController.movementDockDtoExp);
+		String HttpAddress = "/movement/doc";
+		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
 	@Test
-	void wrongCreatingMethodMovementDockDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDockDtoExp = new MovementDockDto( 1, 1, null, DockTypeEnum.WAREHOUSE_RECEIPT);
+	void wrongCreatingMethodMovementDocDtoTest() throws JsonProcessingException, Exception{
+		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, null);
 		int statusExp = 400;
-		String HttpAddress = "/movement/dock";
-		makeTest(statusExp, HttpAddress, TestController.movementDockDtoExp);
+		String HttpAddress = "/movement/doc";
+		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
 	@Test
-	void wrongDockTypeMovementDockDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDockDtoExp = new MovementDockDto( 1, 1, CreatingMethodEnum.BY_OPERATOR, null);
+	void wrongDocTypeMovementDocDtoTest() throws JsonProcessingException, Exception{
+		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, CreatingMethodEnum.BY_OPERATOR);
 		int statusExp = 400;
-		String HttpAddress = "/movement/dock";
-		makeTest(statusExp, HttpAddress, TestController.movementDockDtoExp);
+		String HttpAddress = "/movement/doc";
+		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
 //	*******************************************************************************************************	
 //	orderDtoTests

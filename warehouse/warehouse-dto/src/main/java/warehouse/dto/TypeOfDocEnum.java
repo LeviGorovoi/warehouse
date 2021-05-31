@@ -1,5 +1,5 @@
 package warehouse.dto;
 
-public enum DockTypeEnum {
+public enum TypeOfDocEnum {
 	WAREHOUSE_RECEIPT, WAREHOUSE_INVOICE
 }

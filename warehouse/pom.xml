@@ -37,5 +37,6 @@
 		<module>warehouse-dto</module>
 		<module>warehouse-entities</module>
 		<module>warehouse-documents</module>
+		<module>warehouse-settings</module>
 	</modules>
 </project>

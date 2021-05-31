@@ -16,12 +16,12 @@ import warehouse.dto.*;
 @Builder
 public class Inventory {
 	@Id
-	ObjectId inventoryId = null;
-	LocalDateTime inventoryDate;
-	long containerId;
-	long productId;
-	LocalDateTime receiptDateTime;
-	int deviation;
-	CreatingMethodEnum creatingMethod;
-	int operatorId;
+	private ObjectId inventoryId = null;
+	private LocalDateTime inventoryDate;
+	private long containerId;
+	private long productId;
+	private LocalDateTime receiptDateTime;
+	private int deviation;
+	private CreatingMethodEnum creatingMethod;
+	private int operatorId;
 }
