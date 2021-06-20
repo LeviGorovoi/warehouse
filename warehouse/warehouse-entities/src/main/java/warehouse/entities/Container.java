@@ -19,15 +19,15 @@ public class Container {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@EqualsAndHashCode.Exclude
-	@Column(name="container_id")
-	long containerId;
+ 	@Column(name="container_id")
+	private long containerId;
 	@Setter
-	@Column(name="address", unique =true)
-	String address;
+	@Column(name="address", unique =true, nullable = false)
+	private String address;
 	@Setter
 	@ManyToOne
 	@JoinColumn(name="product_id", nullable = true)
-	Product product;
+	private Product product;
 	
 	public Container(String address, Product product) {
 		this(0, address, product);

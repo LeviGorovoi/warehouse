@@ -7,7 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.*;
-import warehouse.dto.*;
+import warehouse.dto.enums.*;
 
 @Document(collection = "orders")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

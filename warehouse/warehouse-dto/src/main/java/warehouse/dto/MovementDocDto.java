@@ -1,13 +1,9 @@
 package warehouse.dto;
 
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import javax.validation.constraints.*;
+import lombok.*;
+import warehouse.dto.enums.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +15,7 @@ public class MovementDocDto {
 	@Min(1)
 	public int movementDocAmount;
 	@NotNull
-	public  CreatingMethodEnum creatingMethod;
+	public  TypeOfDocEnum typeOfDoc;
 	
 	
 

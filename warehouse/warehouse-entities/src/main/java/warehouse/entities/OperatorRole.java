@@ -1,5 +1,4 @@
 package warehouse.entities;
-import java.util.Set;
 import javax.persistence.*;
 import lombok.*;
 
@@ -17,6 +16,7 @@ public class OperatorRole {
 	@EqualsAndHashCode.Exclude
 	@Column(name = "operator_role_id")
 	private long operatorRoleId;
+	@Setter
 	private @Column(name = "role", nullable = false, unique = true)
 	String role;
 	@Setter
@@ -24,7 +24,5 @@ public class OperatorRole {
 	@JoinColumn(name="operator_id")
 	private Operator operator;
 	
-	public OperatorRole (String operatorRole, Operator operator) {
-		this(0, operatorRole, operator);
-	}
+
 }

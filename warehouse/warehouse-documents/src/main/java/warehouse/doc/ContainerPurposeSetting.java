@@ -7,8 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.*;
-import warehouse.dto.*;
-import warehouse.dto.CreatingMethodEnum;
+import warehouse.dto.enums.*;
 
 @Document(collection = "container_purpose_setting")
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

@@ -24,7 +24,6 @@ public class InventoryDto {
 	public Date receiptDate;
 	@NotEquals(value = 0, message = "must not be equal to {value}")
 	public int deviation;
-	@NotNull
-	public  CreatingMethodEnum creatingMethod;
+
 
 }

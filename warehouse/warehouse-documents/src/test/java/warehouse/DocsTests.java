@@ -12,11 +12,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import warehouse.doc.*;
-import warehouse.dto.CreatingMethodEnum;
+import warehouse.dto.enums.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes= {ContainerPurposeSettingRepo.class, InventoryRepo.class, MovementDocRepo.class,
-		OrderRepo.class, RoleSettingRepo.class, TransportSupplySettingRepo.class})
+		OrderRepo.class, OperatorToRoleSettingRepo.class, TransportSupplySettingRepo.class})
 @EnableAutoConfiguration 
 @AutoConfigureDataMongo
 public class DocsTests {
@@ -29,7 +29,7 @@ MovementDocRepo movementDocRepo;
 @Autowired
 OrderRepo orderRepo;
 @Autowired
-RoleSettingRepo roleSettingRepo;
+OperatorToRoleSetting operatorToRoleSetting;
 @Autowired
 TransportSupplySettingRepo transportSupplySettingRepo;
 @Test

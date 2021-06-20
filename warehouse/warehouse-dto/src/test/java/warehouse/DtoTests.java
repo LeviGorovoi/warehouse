@@ -23,6 +23,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import warehouse.dto.*;
+import warehouse.dto.container.*;
+import warehouse.dto.enums.*;
+import warehouse.dto.product.*;
 
 
 @AutoConfigureMockMvc
@@ -31,26 +34,26 @@ import warehouse.dto.*;
 
 public class DtoTests {
 	public static @RestController class TestController {
-		static ContainerDto containerExp;
-		static ProductDto productExp;
-		static TransportSupplyDto transportSupplyDtoExp;
+		static CreatingContainerDto containerExp;
+		static CreatingProductDto productExp;
+		static TransportSupplySettingDto transportSupplyDtoExp;
 		static InventoryDto inventoryExp;
 		static MovementDocDto movementDocDtoExp;
 		static OrderDto orderDtoExp;
-		static IrreducibleBalanceDto irreducibleBalanceExp;
+		static IrreducibleBalanceSettingDto irreducibleBalanceExp;
 		
 		@PostMapping("/container")
-		void testContainer(@RequestBody @Valid ContainerDto containerDto) {
-			assertEquals(containerExp, containerDto);
+		void testContainer(@RequestBody @Valid CreatingContainerDto creatingContainerDto) {
+			assertEquals(containerExp, creatingContainerDto);
 		}
 		@PostMapping("/product")
-		void testProduct(@RequestBody @Valid ProductDto productDto) {
-			assertEquals(productExp, productDto);
+		void testProduct(@RequestBody @Valid CreatingProductDto creatingProductDto) {
+			assertEquals(productExp, creatingProductDto);
 		}
 
 		@PostMapping("/product/transportation/parameters")
-		void testProductTransportationParameters(@RequestBody @Valid TransportSupplyDto transportSupplyDto) {
-			assertEquals(transportSupplyDtoExp, transportSupplyDto);
+		void testProductTransportationParameters(@RequestBody @Valid TransportSupplySettingDto transportSupplySettingDto) {
+			assertEquals(transportSupplyDtoExp, transportSupplySettingDto);
 		}	
 		@PostMapping("/inventory")
 		void testProduct(@RequestBody @Valid InventoryDto inventory) {
@@ -65,8 +68,8 @@ public class DtoTests {
 			assertEquals(orderDtoExp, orderDto);
 		}
 		@PostMapping("/irreducible/balance")
-		void testOrderDto(@RequestBody @Valid IrreducibleBalanceDto irreducibleBalanceDto) {
-			assertEquals(irreducibleBalanceExp, irreducibleBalanceDto);
+		void testOrderDto(@RequestBody @Valid IrreducibleBalanceSettingDto irreducibleBalanceSettingDto) {
+			assertEquals(irreducibleBalanceExp, irreducibleBalanceSettingDto);
 		}
 	}
 	ObjectMapper mapper = new ObjectMapper();
@@ -84,7 +87,7 @@ public class DtoTests {
 //	ContainerTests
 	@Test
 	void NormalContainerTest() throws JsonProcessingException, Exception{
-		TestController.containerExp = new ContainerDto("123");
+		TestController.containerExp = new CreatingContainerDto("123");
 		int statusExp = 200;
 		String HttpAddress = "/container";
 		makeTest(statusExp, HttpAddress, TestController.containerExp);
@@ -92,7 +95,7 @@ public class DtoTests {
 
 	@Test
 	void wrongAddressContainerTest() throws JsonProcessingException, Exception{
-		TestController.containerExp = new ContainerDto(null);
+		TestController.containerExp = new CreatingContainerDto("");
 		int statusExp = 400;
 		String HttpAddress = "/container";
 		makeTest(statusExp, HttpAddress, TestController.containerExp);
@@ -102,21 +105,21 @@ public class DtoTests {
 //	productTests
 	@Test
 	void NormalProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new ProductDto("123", 1);
+		TestController.productExp = new CreatingProductDto("123", 1);
 		int statusExp = 200;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
 	}
 	@Test
 	void wrongNameProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new ProductDto(null, 1);
+		TestController.productExp = new CreatingProductDto(null, 1);
 		int statusExp = 400;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
 	}
 	@Test
 	void wrongNumberInContainerProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new ProductDto("123", -3);
+		TestController.productExp = new CreatingProductDto("123", -3);
 		int statusExp = 400;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
@@ -126,21 +129,21 @@ public class DtoTests {
 //	transportSupplyDtoTests
 	@Test
 	void NormalTransportSupplyDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportSupplyDtoExp = new TransportSupplyDto(Date.from(Instant.now()), 1, -1);
+		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, -1);
 		int statusExp = 200;
 		String HttpAddress = "/product/transportation/parameters";
 		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
 	}
 	@Test
 	void wrongDateTransportSupplyDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportSupplyDtoExp = new TransportSupplyDto(null, 1, -1);
+		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().minusSeconds(1000)), 1, -1);
 		int statusExp = 400;
 		String HttpAddress = "/product/transportation/parameters";
 		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
 	}
 	@Test
 	void wrongProductIdTransportSupplyDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportSupplyDtoExp = new TransportSupplyDto(Date.from(Instant.now()), -1, -1);
+		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().plusSeconds(1000)), -1, -1);
 		int statusExp = 400;
 		String HttpAddress = "/product/transportation/parameters";
 		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
@@ -149,79 +152,67 @@ public class DtoTests {
 //	inventoryTests
 	@Test
 	void NormalInventoryTest() throws JsonProcessingException, Exception{
-		TestController.inventoryExp = new InventoryDto( 1, 1, Date.from(Instant.now()), 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.inventoryExp = new InventoryDto( 1, 1, Date.from(Instant.now()), 1);
 		int statusExp = 200;
 		String HttpAddress = "/inventory";
 		makeTest(statusExp, HttpAddress, TestController.inventoryExp);
 	}
 	@Test
 	void wrongContainerIdInventoryTest() throws JsonProcessingException, Exception{
-		TestController.inventoryExp = new InventoryDto( 1, -1, Date.from(Instant.now()), 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.inventoryExp = new InventoryDto( 1, -1, Date.from(Instant.now()), 1);
 		int statusExp = 400;
 		String HttpAddress = "/inventory";
 		makeTest(statusExp, HttpAddress, TestController.inventoryExp);
 	}
 	@Test
 	void wrongProductIdInventoryTest() throws JsonProcessingException, Exception{
-		TestController.inventoryExp = new InventoryDto( -1, 1, Date.from(Instant.now()), 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.inventoryExp = new InventoryDto( -1, 1, Date.from(Instant.now()), 1);
 		int statusExp = 400;
 		String HttpAddress = "/inventory";
 		makeTest(statusExp, HttpAddress, TestController.inventoryExp);
 	}
 	@Test
 	void wrongDateInventoryTest() throws JsonProcessingException, Exception{
-		TestController.inventoryExp = new InventoryDto( 1, 1, null, 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.inventoryExp = new InventoryDto( 1, 1, null, 1);
 		int statusExp = 400;
 		String HttpAddress = "/inventory";
 		makeTest(statusExp, HttpAddress, TestController.inventoryExp);
 	}
 	@Test
 	void wrongDeviationInventoryTest() throws JsonProcessingException, Exception{
-		TestController.inventoryExp = new InventoryDto( 1, 1, Date.from(Instant.now()), 0, CreatingMethodEnum.BY_OPERATOR);
+		TestController.inventoryExp = new InventoryDto( 1, 1, Date.from(Instant.now()), 0);
 		int statusExp = 400;
 		String HttpAddress = "/inventory";
 		makeTest(statusExp, HttpAddress, TestController.inventoryExp);
 	}
-	@Test
-	void wrongCreatingMethodTest() throws JsonProcessingException, Exception{
-		TestController.inventoryExp = new InventoryDto( 1, 1, Date.from(Instant.now()), 1, null);
-		int statusExp = 400;
-		String HttpAddress = "/inventory";
-		makeTest(statusExp, HttpAddress, TestController.inventoryExp);
-	}
+
 //	*******************************************************************************************************	
 //	movementDocDtoTests
 	@Test
 	void NormalMovementDocDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, TypeOfDocEnum.WAREHOUSE_INVOICE);
 		int statusExp = 200;
 		String HttpAddress = "/movement/doc";
 		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
 	@Test
 	void wrongProductIdMovementDocDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDocDtoExp = new MovementDocDto( -1, 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.movementDocDtoExp = new MovementDocDto( -1, 1, TypeOfDocEnum.WAREHOUSE_INVOICE);
 		int statusExp = 400;
 		String HttpAddress = "/movement/doc";
 		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
 	@Test
 	void wrongMovementDocAmountMovementDocDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDocDtoExp = new MovementDocDto( 1, -1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.movementDocDtoExp = new MovementDocDto( 1, -1, TypeOfDocEnum.WAREHOUSE_INVOICE);
 		int statusExp = 400;
 		String HttpAddress = "/movement/doc";
 		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
 	}
-	@Test
-	void wrongCreatingMethodMovementDocDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, null);
-		int statusExp = 400;
-		String HttpAddress = "/movement/doc";
-		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
-	}
+
 	@Test
 	void wrongDocTypeMovementDocDtoTest() throws JsonProcessingException, Exception{
-		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.movementDocDtoExp = new MovementDocDto( 1, 1, null);
 		int statusExp = 400;
 		String HttpAddress = "/movement/doc";
 		makeTest(statusExp, HttpAddress, TestController.movementDocDtoExp);
@@ -230,35 +221,28 @@ public class DtoTests {
 //	orderDtoTests
 	@Test
 	void NormalOrderDtoTest() throws JsonProcessingException, Exception{
-		TestController.orderDtoExp = new OrderDto( 1, 1, CreatingMethodEnum.BY_OPERATOR, OrderStatusEnum.CLOSED);
+		TestController.orderDtoExp = new OrderDto( 1, 1, OrderStatusEnum.CLOSED);
 		int statusExp = 200;
 		String HttpAddress = "/order";
 		makeTest(statusExp, HttpAddress, TestController.orderDtoExp);
 	}
 	@Test
 	void wrongProductIdOrderDtoTest() throws JsonProcessingException, Exception{
-		TestController.orderDtoExp = new OrderDto( -1, 1, CreatingMethodEnum.BY_OPERATOR, OrderStatusEnum.CLOSED);
+		TestController.orderDtoExp = new OrderDto( -1, 1, OrderStatusEnum.CLOSED);
 		int statusExp = 400;
 		String HttpAddress = "/order";
 		makeTest(statusExp, HttpAddress, TestController.orderDtoExp);
 	}
 	@Test
 	void wrongOrderAmountOrderDtoTest() throws JsonProcessingException, Exception{
-		TestController.orderDtoExp = new OrderDto( 1, -1, CreatingMethodEnum.BY_OPERATOR, OrderStatusEnum.CLOSED);
-		int statusExp = 400;
-		String HttpAddress = "/order";
-		makeTest(statusExp, HttpAddress, TestController.orderDtoExp);
-	}
-	@Test
-	void wrongCreatingMethodOrderDtoTest() throws JsonProcessingException, Exception{
-		TestController.orderDtoExp = new OrderDto( 1, 1, null, OrderStatusEnum.CLOSED);
+		TestController.orderDtoExp = new OrderDto( 1, -1, OrderStatusEnum.CLOSED);
 		int statusExp = 400;
 		String HttpAddress = "/order";
 		makeTest(statusExp, HttpAddress, TestController.orderDtoExp);
 	}
 	@Test
 	void wrongOrderStatusOrderDtoTest() throws JsonProcessingException, Exception{
-		TestController.orderDtoExp = new OrderDto( 1, 1, CreatingMethodEnum.BY_OPERATOR, null);
+		TestController.orderDtoExp = new OrderDto( 1, 1, null);
 		int statusExp = 400;
 		String HttpAddress = "/order";
 		makeTest(statusExp, HttpAddress, TestController.orderDtoExp);
@@ -266,37 +250,38 @@ public class DtoTests {
 //	orderDtoTests
 	@Test
 	void NormalIrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceDto(Date.from(Instant.now()), 1, 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, 1);
 		int statusExp = 200;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
 	@Test
-	void wrongirreducibleBalanceAppointmentAssignmentDateIrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceDto(null, 1, 1, CreatingMethodEnum.BY_OPERATOR);
+	void wrongIrreducibleBalanceSettingDateIrreducibleBalanceTest() throws JsonProcessingException, Exception{
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().minusSeconds(1000)), 1, 1);
+		int statusExp = 400;
+		String HttpAddress = "/irreducible/balance";
+		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
+	}
+	@Test
+	void nullIrreducibleBalanceSettingDateIrreducibleBalanceTest() throws JsonProcessingException, Exception{
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(null, 1, 1);
 		int statusExp = 400;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
 	@Test
 	void wrongProductIdIrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceDto(Date.from(Instant.now()), -1, 1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), -1, 1);
 		int statusExp = 400;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
 	@Test
 	void wrongirreducibleBalanceAmountrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceDto(Date.from(Instant.now()), 1, -1, CreatingMethodEnum.BY_OPERATOR);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, -1);
 		int statusExp = 400;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
-	@Test
-	void wrongOrderStatusAmountrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceDto(Date.from(Instant.now()), 1, -1, null);
-		int statusExp = 400;
-		String HttpAddress = "/irreducible/balance";
-		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
-	}
+	
 }
