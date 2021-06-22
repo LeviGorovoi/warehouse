@@ -8,10 +8,10 @@ import warehouse.dto.role.*;
 import warehouse.entities.Container;
 
 
-public interface WarehouseConfiguratorService {
+public interface WarehouseSecurityService {
 Mono<Void> createAndSaveContainer(CreatingContainerDto containerDto);
 void changeContainerAddress(ChangeContainerAddressDto changeContainerAddressDto);
-String setProductToContainer(ProductToContainerSettingDto containerPurposeSettingDto);
+void setProductToContainer(ProductToContainerSettingDto containerPurposeSettingDto);
 
 Mono<Void> createAndSaveProduct (CreatingProductDto productDto);
 void changeProductName (ChangeProductNameDto changeProductNameDto);

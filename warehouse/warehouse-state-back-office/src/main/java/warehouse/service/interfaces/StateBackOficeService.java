@@ -10,7 +10,7 @@ import warehouse.dto.role.*;
 import warehouse.entities.Container;
 
 
-public interface WarehouseStateBackOficeService {
+public interface StateBackOficeService {
 Mono<ResponseEntity<Void>> createAndSaveContainer(CreatingContainerDto containerDto);
 void changeContainerAddress(ChangeContainerAddressDto changeContainerAddressDto);
 String setProductToContainer(ProductToContainerSettingDto containerPurposeSettingDto);

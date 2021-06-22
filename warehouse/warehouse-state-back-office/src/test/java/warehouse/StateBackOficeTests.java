@@ -8,7 +8,7 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import lombok.extern.slf4j.Slf4j;
 import warehouse.dto.container.CreatingContainerDto;
 import warehouse.entities.Container;
-import warehouse.service.impl.WarehouseStateBackOficeServiceImpl;
+import warehouse.service.impl.StateBackOficeServiceImpl;
 
 import static warehouse.dto.api.WarehouseConfiguratorApi.*;
 
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.*;
 @Slf4j
 @SpringBootTest
 @AutoConfigureWebTestClient
-public class WarehouseStateBackOficeTests {
+public class StateBackOficeTests {
 	private static final @NotEmpty String ADDRESS = "asd";
 @Autowired
 WebTestClient webTestClient;

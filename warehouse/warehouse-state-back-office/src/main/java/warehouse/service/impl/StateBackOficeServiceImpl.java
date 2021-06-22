@@ -18,7 +18,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import warehouse.repo.*;
-import warehouse.service.interfaces.WarehouseStateBackOficeService;
+import warehouse.service.interfaces.StateBackOficeService;
 import warehouse.dto.container.*;
 import warehouse.dto.operator.*;
 import warehouse.dto.product.*;
@@ -30,7 +30,7 @@ import warehouse.exceptions.DuplicatedException;
 @Service
 
 @Slf4j
-public class WarehouseStateBackOficeServiceImpl implements WarehouseStateBackOficeService {
+public class StateBackOficeServiceImpl implements StateBackOficeService {
 	WebClient client = WebClient.create("http://localhost:9090");
 
 	private Mono<ResponseEntity<Void>> createPutRequest(String uri, Object bodyValue, String errorMessage) {

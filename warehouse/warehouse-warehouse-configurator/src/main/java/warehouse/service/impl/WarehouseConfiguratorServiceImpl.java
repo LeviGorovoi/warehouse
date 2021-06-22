@@ -14,7 +14,7 @@ import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import warehouse.repo.*;
-import warehouse.service.interfaces.WarehouseConfiguratorService;
+import warehouse.service.interfaces.WarehouseSecurityService;
 import warehouse.dto.container.*;
 import warehouse.dto.operator.*;
 import warehouse.dto.product.*;
@@ -28,7 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 
 @Slf4j
-public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorService {
+public class WarehouseConfiguratorServiceImpl implements WarehouseSecurityService {
 	@Value("${app-binding-name-docs:docs-out-0}")
 	String dtoForDocBindingName;
 
@@ -53,11 +53,10 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 		this.objectMapper = objectMapper;
 	}
 
-	private <T, ID> void saveMethod(JpaRepository<T, ID> repo, T newObj,
-			String errorMessage) {
+	private <T, ID> void saveMethod(JpaRepository<T, ID> repo, T newObj, String errorMessage) {
 		try {
 			repo.save(newObj);
-			log.debug("newObj by {} saved", newObj.getClass() );
+			log.debug("newObj by {} saved", newObj.getClass());
 		} catch (DataIntegrityViolationException e) {
 			throw new DuplicatedException(errorMessage);
 		}
@@ -65,14 +64,15 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 
 	@Override
 	@Transactional
-	public  Mono<Void> createAndSaveContainer(CreatingContainerDto containerDto) {
-		log.debug("the containerDto with address {}  recieved by thread {} ", containerDto.address, Thread.currentThread().getName());
-		return Mono.create(s->{
+	public Mono<Void> createAndSaveContainer(CreatingContainerDto containerDto) {
+		log.debug("the containerDto with address {}  recieved by thread {} ", containerDto.address,
+				Thread.currentThread().getName());
+		return Mono.create(s -> {
 			Container newContainer = Container.builder().address(containerDto.address).build();
-			String errorMessage = String.format("Container with address %s already exist",
-					containerDto.address);
+			String errorMessage = String.format("Container with address %s already exist", containerDto.address);
 			saveMethod(containerWarehouseConfiguratorRepo, newContainer, errorMessage);
-			log.debug("saved container with address {} by thread {} ", containerDto.address, Thread.currentThread().getName());
+			log.debug("saved container with address {} by thread {} ", containerDto.address,
+					Thread.currentThread().getName());
 			s.success();
 		});
 
@@ -87,25 +87,23 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 
 	@Override
 	@Transactional
-	public String setProductToContainer(ProductToContainerSettingDto containerPurposeSettingDto) {
+	public void setProductToContainer(ProductToContainerSettingDto productToContainerSettingDto) {
 		String dtoForDocJson = "";
-		// containerId productId передаются из бэк-офиса. Там они появляются ккогда
+		// containerId productId передаются из бэк-офиса. Там они появляются когда
 		// клиент выбирает через фильтры по именам.
 		// контроль наличия имен там
 		// containerId productIds are passed from the back office. There they appear
 		// when the client
 		// selects through name filters. Check if names exist there
-		Product product = productWarehouseConfiguratorRepo.findById(containerPurposeSettingDto.productId).orElse(null);
+		Product product = productWarehouseConfiguratorRepo.findById(productToContainerSettingDto.productId)
+				.orElseThrow(() -> new NotFoundException(
+						String.format("No product with id %d", productToContainerSettingDto.productId)));
 		// на случай, если вдруг будет удалено в процессе транзакции
 		// in case it is suddenly deleted during the transaction
-		if (product == null) {
-			throw new NotFoundException(String.format("No product with id %d", containerPurposeSettingDto.productId));
-		}
-
-		containerWarehouseConfiguratorRepo.setProductToContainer(containerPurposeSettingDto.containerId, product);
+		containerWarehouseConfiguratorRepo.setProductToContainer(productToContainerSettingDto.containerId, product);
 		ProductToContainerSettingDtoForDoc dtoForDoc = ProductToContainerSettingDtoForDoc.builder()
-				.productToContainerSettingDate(null).containerId(containerPurposeSettingDto.containerId)
-				.productId(containerPurposeSettingDto.productId).creatingMethod(null).operatorId(0).build();
+				.productToContainerSettingDate(null).containerId(productToContainerSettingDto.containerId)
+				.productId(productToContainerSettingDto.productId).creatingMethod(null).operatorId(0).build();
 		// TODO definition creatingMethod and operatorId
 		try {
 			dtoForDocJson = objectMapper.writeValueAsString(dtoForDoc);
@@ -113,20 +111,19 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 			log.debug("ProductToContainerSettingDtoForDoc was not serialized");
 		}
 		streamBridge.send(dtoForDocBindingName, dtoForDocJson);
-		return null;
 	}
 
 	@Override
 	@Transactional
 	public Mono<Void> createAndSaveProduct(CreatingProductDto productDto) {
 		log.debug("the productDto {} recieved by thread {} ", productDto.productName, Thread.currentThread().getName());
-		return Mono.create(s->{
+		return Mono.create(s -> {
 			Product newProduct = Product.builder().numberInContainer(productDto.numberInContainer)
-				.productName(productDto.productName).build();
-		String errorMessage = String.format("Product %s already exist", productDto.productName);
-		saveMethod(productWarehouseConfiguratorRepo, newProduct, errorMessage);
-		log.debug("saved product {} by thread {} ",productDto.productName, Thread.currentThread().getName());
-		s.success();
+					.productName(productDto.productName).build();
+			String errorMessage = String.format("Product %s already exist", productDto.productName);
+			saveMethod(productWarehouseConfiguratorRepo, newProduct, errorMessage);
+			log.debug("saved product {} by thread {} ", productDto.productName, Thread.currentThread().getName());
+			s.success();
 		});
 	}
 
@@ -155,13 +152,13 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 	@Transactional
 	public Mono<Void> createAndSaveOperator(CreatingOperatorDto operatorDto) {
 		log.debug("the operatorDto recieved by thread {} ", Thread.currentThread().getName());
-		return Mono.create(s->{
-		Operator newOperator = Operator.builder().operatorName(operatorDto.operatorName)
-				.operatorEmail(operatorDto.operatorEmail).build();
-		String errorMessage = String.format("Operator %s already exist", operatorDto.operatorName);
-		saveMethod(operatorWarehouseConfiguratorRepo, newOperator, errorMessage);
-		log.debug("saved operator {} by thread {} ",operatorDto.operatorName, Thread.currentThread().getName());
-		s.success();
+		return Mono.create(s -> {
+			Operator newOperator = Operator.builder().operatorName(operatorDto.operatorName)
+					.operatorEmail(operatorDto.operatorEmail).build();
+			String errorMessage = String.format("Operator %s already exist", operatorDto.operatorName);
+			saveMethod(operatorWarehouseConfiguratorRepo, newOperator, errorMessage);
+			log.debug("saved operator {} by thread {} ", operatorDto.operatorName, Thread.currentThread().getName());
+			s.success();
 		});
 	}
 
@@ -183,12 +180,13 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 	@Transactional
 	public Mono<Void> createAndSaveOperatorRole(CreatingOperatorRoleDto operatorRoleDto) {
 		log.debug("the operatorRoleDto recieved by thread {} ", Thread.currentThread().getName());
-		return Mono.create(s->{
-		OperatorRole newOperatorRole = OperatorRole.builder().role(operatorRoleDto.operatorRole).build();
-		String errorMessage = String.format("Role %s already exist", operatorRoleDto.operatorRole);
-		saveMethod(operatorRoleWarehouseConfiguratorRepo, newOperatorRole, errorMessage);
-		log.debug("saved operatorRole {} by thread {} ",operatorRoleDto.operatorRole, Thread.currentThread().getName());
-		s.success();
+		return Mono.create(s -> {
+			OperatorRole newOperatorRole = OperatorRole.builder().role(operatorRoleDto.operatorRole).build();
+			String errorMessage = String.format("Role %s already exist", operatorRoleDto.operatorRole);
+			saveMethod(operatorRoleWarehouseConfiguratorRepo, newOperatorRole, errorMessage);
+			log.debug("saved operatorRole {} by thread {} ", operatorRoleDto.operatorRole,
+					Thread.currentThread().getName());
+			s.success();
 		});
 	}
 

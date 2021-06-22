@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
-import warehouse.service.interfaces.WarehouseStateBackOficeService;
+import warehouse.service.interfaces.StateBackOficeService;
 import warehouse.dto.*;
 import warehouse.dto.container.*;
 import warehouse.dto.enums.*;
@@ -21,9 +21,9 @@ import javax.validation.Valid;
 
 @RestController
 @Slf4j
-public class WarehouseStateBackOficeController {
+public class StateBackOficeController {
 @Autowired
-WarehouseStateBackOficeService service;
+StateBackOficeService service;
 @PutMapping(CONTAINER_CREATE)
 Mono<ResponseEntity<Void>> createAndSaveContainer(@Valid @RequestBody CreatingContainerDto containerDto) {
 	return service.createAndSaveContainer(containerDto);

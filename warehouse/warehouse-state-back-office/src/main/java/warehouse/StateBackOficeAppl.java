@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class WarehouseStateBackOficeAppl {
+public class StateBackOficeAppl {
 	public static void main(String[] args) {
-		SpringApplication.run(WarehouseStateBackOficeAppl.class, args);
+		SpringApplication.run(StateBackOficeAppl.class, args);
 
 	}
 }

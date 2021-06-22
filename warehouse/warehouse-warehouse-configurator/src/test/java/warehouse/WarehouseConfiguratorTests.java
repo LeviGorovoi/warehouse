@@ -30,7 +30,7 @@ import java.util.Date;
 import javax.validation.constraints.NotEmpty;
 
 
-import warehouse.service.interfaces.WarehouseConfiguratorService;
+import warehouse.service.interfaces.WarehouseSecurityService;
 import warehouse.dto.DocumentDtosParent;
 import warehouse.dto.container.*;
 import warehouse.dto.product.*;
@@ -54,7 +54,7 @@ String dtoForDocBindingName;
 	@Autowired
 	WebTestClient testClient;
 	@Autowired
-	WarehouseConfiguratorService service;
+	WarehouseSecurityService service;
 	@Autowired
 	ContainerWarehouseConfiguratorRepo containerRepo;
 	@Autowired
@@ -79,13 +79,13 @@ OutputDestination consumer;
 		normalPutTest(CONTAINER_CREATE, newContainer);
 		newContainer = new CreatingContainerDto(ADDRESS);
 		try {
-			service.createAndSaveContainer(newContainer);
+			service.createAndSaveContainer(newContainer).block();
 		} catch (Exception e) {
 			log.debug(e.getMessage());
 		}
 		newContainer = new CreatingContainerDto(null);
 		try {
-			service.createAndSaveContainer(newContainer);
+			service.createAndSaveContainer(newContainer).block();
 		} catch (Exception e) {
 			log.debug(e.getMessage());
 		}
@@ -96,6 +96,7 @@ OutputDestination consumer;
 	void setProductToContainerTest() throws IOException{
 		service.setProductToContainer(new ProductToContainerSettingDto(new Date(10), 1, 1));
 		Product productExp = productRepo.findByProductName(PRODUCT_NAME);
+		System.out.println("++++++++++++++++++++++++"+productExp.toString());
 		assertEquals(productExp, containerRepo.findByAddress(ADDRESS).getProduct());
 		
 		Message<byte[]> message = consumer.receive(0, dtoForDocBindingName);
@@ -115,7 +116,7 @@ OutputDestination consumer;
 	@Order(2)
 	void normalCreateAndSaveProductTest() {
 		CreatingProductDto newProduct = new CreatingProductDto(PRODUCT_NAME, 1);
-		service.createAndSaveProduct(newProduct);
+		service.createAndSaveProduct(newProduct).block();
 		Product Product = productRepo.findByProductName(PRODUCT_NAME);
 		assertEquals(1, Product.getProductId());
 

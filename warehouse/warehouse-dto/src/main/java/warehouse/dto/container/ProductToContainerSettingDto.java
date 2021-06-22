@@ -16,5 +16,6 @@ public class ProductToContainerSettingDto {
 	@Min(1)
 	public long productId;
 
+
 	
 }

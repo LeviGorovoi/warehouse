@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
-import warehouse.service.interfaces.WarehouseConfiguratorService;
+import warehouse.service.interfaces.WarehouseSecurityService;
 import warehouse.dto.*;
 import warehouse.dto.container.*;
 import warehouse.dto.enums.*;
@@ -22,7 +22,7 @@ import javax.validation.Valid;
 @Slf4j
 public class WarehouseConfiguratorController {
 	@Autowired
-	WarehouseConfiguratorService service;
+	WarehouseSecurityService service;
 
 	@PutMapping(CONTAINER_CREATE)
 	Mono<Void> createAndSaveContainer(@Valid @RequestBody CreatingContainerDto containerDto) {
