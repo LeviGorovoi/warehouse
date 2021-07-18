@@ -1,10 +1,21 @@
 package warehouse.dto.security;
 
+
+
 import javax.validation.constraints.NotEmpty;
 
+import lombok.*;
+
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@EqualsAndHashCode
+@ToString
+@Builder
 public class UserLoginRequestDto {
 	@NotEmpty
-	public String username;
+	private String username;
 	@NotEmpty
-	public String password;
+	private String password;
 }

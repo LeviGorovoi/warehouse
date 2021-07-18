@@ -3,41 +3,85 @@ package warehouse.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
-import warehouse.service.interfaces.WarehouseSecurityService;
-import warehouse.dto.*;
+import warehouse.service.interfaces.WarehouseConfiguratorService;
 import warehouse.dto.container.*;
-import warehouse.dto.enums.*;
 import warehouse.dto.operator.*;
 import warehouse.dto.product.*;
-import warehouse.dto.role.CreatingOperatorRoleDto;
-import warehouse.entities.*;
+import warehouse.dto.role.*;
 
 import static warehouse.dto.api.WarehouseConfiguratorApi.*;
 
 import javax.validation.Valid;
 
 @RestController
-@Slf4j
+
 public class WarehouseConfiguratorController {
 	@Autowired
-	WarehouseSecurityService service;
+	WarehouseConfiguratorService service;
 
-	@PutMapping(CONTAINER_CREATE)
-	Mono<Void> createAndSaveContainer(@Valid @RequestBody CreatingContainerDto containerDto) {
-		return service.createAndSaveContainer(containerDto);		
+	@PostMapping(CONTAINER_CREATE)
+	Mono<String> createAndSaveContainer(@Valid @RequestBody CreatingContainerDto containerDto) {
+		return service.createAndSaveContainer(containerDto);
 	}
-	@PutMapping(PRODUCT_CREATE)
-	Mono<Void> createAndSaveContainer(@Valid @RequestBody CreatingProductDto productDto) {
-		return service.createAndSaveProduct(productDto);		
+
+	@PostMapping(PRODUCT_CREATE)
+	Mono<String> createAndSaveContainer(@Valid @RequestBody CreatingProductDto dto) {
+		return service.createAndSaveProduct(dto);
 	}
-	@PutMapping(OPERATOR_CREATE)
-	Mono<Void> createAndSaveContainer(@Valid @RequestBody CreatingOperatorDto operatorDto) {
-		return service.createAndSaveOperator(operatorDto);		
+
+	@PostMapping(OPERATOR_CREATE)
+	Mono<String> createAndSaveContainer(@Valid @RequestBody CreatingOperatorDto dto) {
+		return service.createAndSaveOperator(dto);
 	}
-	@PutMapping(ROLE_CREATE)
-	Mono<Void> createAndSaveOperatorRole(@Valid @RequestBody CreatingOperatorRoleDto operatorRoleDto) {
-		return service.createAndSaveOperatorRole(operatorRoleDto);		
+
+	@PostMapping(ROLE_CREATE)
+	Mono<String> createAndSaveRole(@Valid @RequestBody CreatingRoleDto dto) {
+		return service.createAndSaveRole(dto);
+	}
+
+	@PostMapping(SET_OPERATOR_TO_ROLE)
+	Mono<String> setOperatorToRole(@Valid @RequestBody OperatorToRoleSettingDto dto) {
+		return service.setOperatorToRole(dto);
+	}
+
+	@PostMapping(SET_PRODUCT_TO_CONTAINER)
+	Mono<String> setProductToContainer(@Valid @RequestBody ProductToContainerSettingDto dto) {
+		return service.setProductToContainer(dto);
+	}
+
+	@PostMapping(CHANGE_CONTAINER_ADDRESS)
+	Mono<String> changeContainerAddress(@Valid @RequestBody ChangeContainerAddressDto dto) {
+		return service.changeContainerAddress(dto);
+	}
+
+	@PostMapping(CHANGE_PRODUCT_NAME)
+	Mono<String> changeProductName(@Valid @RequestBody ChangeProductNameDto dto) {
+		return service.changeProductName(dto);
+	}
+
+	@PostMapping(SET_TRANSPORT_SUPPLY_TO_PRODUCT)
+	Mono<String> setTransportSupply(@Valid @RequestBody TransportSupplySettingDto dto) {
+		return service.setTransportSupply(dto);
+	}
+
+	@PostMapping(SET_IRREDUCIBLE_BALANCE_TO_PRODUCT)
+	Mono<String> setIrreducibleBalance(@Valid @RequestBody IrreducibleBalanceSettingDto dto) {
+		return service.setIrreducibleBalance(dto);
+	}
+
+	@PostMapping(CHANGE_OPERATOR_NAME)
+	Mono<String> changeOperatorName(@Valid @RequestBody ChangeOperatorNameDto dto) {
+		return service.changeOperatorName(dto);
+	}
+	
+	@PostMapping(CHANGE_OPERATOR_EMAIL)
+	Mono<String> changeOperatorEmail(@Valid @RequestBody ChangeOperatorEmailDto dto) {
+		return service.changeOperatorEmail(dto);
+	}
+	
+	@PostMapping(CHANGE_ROLE)
+	Mono<String> changeRole(@Valid @RequestBody ChangeRoleDto dto) {
+		return service.changeRole(dto);
 	}
 }

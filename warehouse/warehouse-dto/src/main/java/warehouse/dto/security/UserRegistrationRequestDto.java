@@ -8,13 +8,16 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString
+@Getter
+@Setter
 @Builder
 public class UserRegistrationRequestDto {
 	@NotEmpty
-public String operatorName;
+	private String operatorName;
 	@NotEmpty
-public String userName;
+	private String username;
 	@NotEmpty
-public String password;
-	
+	private String password;
+	private long executorOperatorId;
+
 }

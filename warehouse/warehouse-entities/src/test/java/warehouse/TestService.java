@@ -8,26 +8,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import warehouse.entities.Operator;
-import warehouse.entities.OperatorRole;
+import warehouse.entities.Role;
 
 @Service
 public class TestService {
 	@Autowired
 	OperatorRepo operatorRepo;
 	@Autowired
-	OperatorRoleRepo operatorRoleRepo;
+	RoleRepo roleRepo;
 	
 	@Transactional
 	public void createAndSaveOperator(String role, String email, String name) {
-	Set<OperatorRole> operatorRoles = new HashSet<OperatorRole>();
-	OperatorRole operatorRoleWithId = operatorRoleRepo.findByRole(role);
-	operatorRoles.add(operatorRoleWithId);
+	Set<Role> roles = new HashSet<Role>();
+	Role operatorRoleWithId = roleRepo.findByRole(role);
+	roles.add(operatorRoleWithId);
 	Operator operator = Operator.builder().operatorEmail(email).operatorName(name)
-			.operatorRoles(operatorRoles).build();
+			.roles(roles).build();
 	operatorRepo.save(operator);
 	}
 	@Transactional
 	public void setOperatorToRole(String role, Operator operator) {
-	operatorRoleRepo.setOperatorToRole(role, operator);
+	roleRepo.setOperatorToRole(role, operator);
 }
 }

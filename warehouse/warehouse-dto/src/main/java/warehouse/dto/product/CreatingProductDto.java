@@ -3,17 +3,25 @@ package warehouse.dto.product;
 import javax.validation.constraints.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class CreatingProductDto {
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class CreatingProductDto extends ParentDto {
 	@NotEmpty
-	public String productName;
+	private String productName;
 	@Min(1)
-	public int  numberInContainer;
+	private int numberInContainer;
+	private long executorOperatorId;
 }

@@ -7,7 +7,7 @@ import lombok.*;
 @Entity
 @Table(name = "products")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 @ToString
@@ -31,8 +31,5 @@ public class Product {
 	@Column(name = "irreducible_balance", nullable = true)
 	private int irreducibleBalance;
 	
-	public Product (String productName, int numberInContainer, int transportSupply, int irreducibleBalance) {
-		this(0, productName, numberInContainer, transportSupply, irreducibleBalance);
-	}
 	
 }

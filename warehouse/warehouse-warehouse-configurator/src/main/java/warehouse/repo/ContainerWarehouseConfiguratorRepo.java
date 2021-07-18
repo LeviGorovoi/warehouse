@@ -15,5 +15,9 @@ public interface ContainerWarehouseConfiguratorRepo extends JpaRepository<Contai
 	
 	@Modifying
 	@Query("update Container c set c.product=:product where c.containerId=:container_id")
-	void setProductToContainer(@Param("container_id") long containerId, Product product);
+	int setProductToContainer(@Param("container_id") long containerId, Product product);
+	
+	@Modifying
+	@Query("update Container c set c.address=:new_address where c.containerId=:container_id")
+	int changeContainerAddress(@Param("container_id") long containerId, @Param("new_address") String newAddress);
 }

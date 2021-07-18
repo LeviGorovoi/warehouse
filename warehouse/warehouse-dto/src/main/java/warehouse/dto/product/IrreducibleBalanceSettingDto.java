@@ -5,22 +5,30 @@ import java.util.Date;
 import javax.validation.constraints.*;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class IrreducibleBalanceSettingDto {
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class IrreducibleBalanceSettingDto extends ParentDto {
 	@FutureOrPresent
 	@NotNull
-	public Date irreducibleBalanceSettingDate;
+	@EqualsAndHashCode.Exclude
+	private Date settingDate;
 	@Min(1)
-	public long productId;
+	private long productId;
 	@Min(0)
-	public int irreducibleBalanceAmount;
-
+	private int irreducibleBalance;
+	private long executorOperatorId;
 	
 }

@@ -2,19 +2,27 @@ package warehouse.dto.role;
 
 import java.util.Date;
 import javax.validation.constraints.*;
+
 import lombok.*;
+import warehouse.dto.*;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class OperatorToRoleSettingDto {
+@EqualsAndHashCode(callSuper=true)
+@Builder
+@Setter
+@Getter
+public class OperatorToRoleSettingDto extends ParentDto {
 	@FutureOrPresent
 	@NotNull
-	public Date operatorToRoleSettingDate;
+	@EqualsAndHashCode.Exclude
+	private Date settingDate;
 	@Min(1)
-	public long operatorRoleId;
+	private long roleId;
 	@Min(1)
-	public long operatorId;
-
+	private long operatorId;
+	private long executorOperatorId;
 	
 }

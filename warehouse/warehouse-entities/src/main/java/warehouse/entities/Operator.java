@@ -9,7 +9,7 @@ import lombok.*;
 @Entity
 @Table(name = "operators")
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @Getter
 @EqualsAndHashCode
 @ToString
@@ -27,9 +27,6 @@ public class Operator {
 	@Column(name = "operator_email", nullable = false)
 	private String operatorEmail;
 	@Setter
-	@Column(name = "user_name", unique = true)
-	private String userName;
-	@Setter
 	@Column(name = "username", unique = true)
 	private String username;
 	@Setter
@@ -40,7 +37,7 @@ public class Operator {
 	@Setter
 	@OneToMany(mappedBy = "operator")
 	@Column(name="operator_roles")
-	private Set<OperatorRole> operatorRoles;
+	private Set<Role> roles;
 
 
 }

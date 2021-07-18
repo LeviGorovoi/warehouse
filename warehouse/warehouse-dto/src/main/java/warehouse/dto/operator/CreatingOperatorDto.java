@@ -2,9 +2,20 @@ package warehouse.dto.operator;
 
 import javax.validation.constraints.NotEmpty;
 
-public class CreatingOperatorDto {
+import lombok.*;
+import warehouse.dto.ParentDto;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class CreatingOperatorDto extends ParentDto {
 	@NotEmpty
-	public String operatorName;
+	private String operatorName;
 	@NotEmpty
-	public String operatorEmail;
+	private String operatorEmail;
+	private long executorOperatorId;
 }

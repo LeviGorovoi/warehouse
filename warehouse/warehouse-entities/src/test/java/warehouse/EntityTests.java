@@ -24,7 +24,7 @@ import warehouse.entities.*;
 @ExtendWith(SpringExtension.class)
 @EnableAutoConfiguration
 @ContextConfiguration(classes = { ContainerRepo.class, ProductRepo.class, RemainderInContainerRepo.class, 
-		OperatorRepo.class, OperatorRoleRepo.class, TestService.class })
+		OperatorRepo.class, RoleRepo.class, TestService.class })
 public class EntityTests {
 	@Autowired
 	ContainerRepo containerRepo;
@@ -35,7 +35,7 @@ public class EntityTests {
 	@Autowired
 	OperatorRepo operatorRepo;
 	@Autowired
-	OperatorRoleRepo operatorRoleRepo;
+	RoleRepo roleRepo;
 	@Autowired 
 	TestService testService;
 
@@ -79,22 +79,22 @@ public class EntityTests {
 
 	@Test
 	void OperatorTest() {
-		OperatorRole operatorRole = OperatorRole.builder().role("qwe").operator(null).build();
-		operatorRoleRepo.save(operatorRole);
+		Role role = Role.builder().role("qwe").operator(null).build();
+		roleRepo.save(role);
 		Operator operator = Operator.builder().operatorEmail("email").operatorName("zxc")
-				.operatorRoles(new HashSet<OperatorRole>()).build();
+				.roles(new HashSet<Role>()).build();
 		operatorRepo.save(operator);
-		OperatorRole operatorRoleWithId = operatorRoleRepo.findByRole("qwe");
+		Role roleWithId = roleRepo.findByRole("qwe");
 		Operator operatorWithId = operatorRepo.findByOperatorName("zxc");
-		operatorRoleWithId.setOperator(operatorWithId);
-		operatorRoleRepo.save(operatorRoleWithId);		
-		OperatorRole operatorRole1 = OperatorRole.builder().role("qwe1").operator(null).build();
-		operatorRoleRepo.save(operatorRole1);
+		roleWithId.setOperator(operatorWithId);
+		roleRepo.save(roleWithId);		
+		Role rRole1 = Role.builder().role("qwe1").operator(null).build();
+		roleRepo.save(rRole1);
 		testService.setOperatorToRole("qwe1", operatorWithId);
 		
 		
-		Set<String> operatorRolesFromOperator = operatorRepo.getOperatorRolesFromOperator("zxc");
-		operatorRolesFromOperator
+		Set<String> rolesFromOperator = operatorRepo.getRolesFromOperator("zxc");
+		rolesFromOperator
 		.forEach(r-> {
 			log.debug("-------------------------------" + r);
 			assertTrue(r.contains("qwe"));}

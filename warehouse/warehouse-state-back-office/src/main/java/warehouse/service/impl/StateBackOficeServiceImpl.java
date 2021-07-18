@@ -1,132 +1,123 @@
+
 package warehouse.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClient.*;
 import static warehouse.dto.api.WarehouseConfiguratorApi.*;
-import lombok.*;
 
-import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
-import warehouse.repo.*;
+import warehouse.service.interfaces.SearchIdByName;
 import warehouse.service.interfaces.StateBackOficeService;
 import warehouse.dto.container.*;
 import warehouse.dto.operator.*;
 import warehouse.dto.product.*;
 import warehouse.dto.role.*;
-import warehouse.entities.*;
-//import warehouse.exceptions.*;
-import warehouse.exceptions.DuplicatedException;
 
 @Service
-
-@Slf4j
 public class StateBackOficeServiceImpl implements StateBackOficeService {
+	@Autowired
+	SearchIdByName searchIdByNameService;
 	WebClient client = WebClient.create("http://localhost:9090");
 
-	private Mono<ResponseEntity<Void>> createPutRequest(String uri, Object bodyValue, String errorMessage) {
-		return client.put().uri(uri).bodyValue(bodyValue)
-				.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).retrieve()
-				.onStatus(status -> status.equals(HttpStatus.CONFLICT), e -> {
-					throw new DuplicatedException(errorMessage);
-				}).toBodilessEntity();
+
+	private <T> Mono<String> postRequest(String uri, T bodyValue){
+		return client.post().uri(uri).bodyValue(bodyValue)
+				.exchangeToMono(response -> {
+			  if (response.statusCode()
+					    .equals(HttpStatus.OK)) {
+					      return response.bodyToMono(String.class);
+					  } else if (response.statusCode()
+					    .is4xxClientError()) {
+					      return response.bodyToMono(String.class);
+					  } else {
+					      return response.createException()
+					        .flatMap(Mono::error);
+					  }
+					});				
 	}
 
 	@Override
 	@Transactional
-	public Mono<ResponseEntity<Void>> createAndSaveContainer(CreatingContainerDto containerDto) {
-		log.debug("Creating container wiht address {}", containerDto.address);
-		String errorMessage = String.format("Container with address %s already exist", containerDto.address);
-		return createPutRequest(CONTAINER_CREATE, containerDto, errorMessage);
+	public Mono<String> createAndSaveContainer(CreatingContainerDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(CONTAINER_CREATE, dto);
 			
 	}
 
 	@Override
-	public void changeContainerAddress(ChangeContainerAddressDto changeContainerAddressDto) {
-		// TODO Auto-generated method stub
-
+	public Mono<String> changeContainerAddress(ChangeContainerAddressDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(CHANGE_CONTAINER_ADDRESS, dto);
 	}
 
 	@Override
 	@Transactional
-	public String setProductToContainer(ProductToContainerSettingDto containerPurposeSettingDto) {
-
-		return null;
+	public Mono<String> setProductToContainer(ProductToContainerSettingDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(SET_PRODUCT_TO_CONTAINER, dto);
 	}
 
 	@Override
-	public Mono<ResponseEntity<Void>> createAndSaveProduct(CreatingProductDto productDto) {
-		log.debug("Creating product {}", productDto.productName);
-		String errorMessage = String.format("Product %s already exist", productDto.productName);
-		return createPutRequest(PRODUCT_CREATE, productDto, errorMessage);
+	public Mono<String> createAndSaveProduct(CreatingProductDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(PRODUCT_CREATE, dto);
 	}
 
 	@Override
-	public void changeProdactName(ChangeProductNameDto changeProductNameDto) {
-		// TODO Auto-generated method stub
-
+	public Mono<String> changeProdactName(ChangeProductNameDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(CHANGE_PRODUCT_NAME, dto);
 	}
 
 	@Override
-	public String setTransportSupply(TransportSupplySettingDto transportSupplySettingDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public Mono<String> setTransportSupply(TransportSupplySettingDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(SET_TRANSPORT_SUPPLY_TO_PRODUCT, dto);
 	}
 
 	@Override
-	public String setIrreducibleBalance(IrreducibleBalanceSettingDto irreducibleBalanceSettingDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public Mono<String> setIrreducibleBalance(IrreducibleBalanceSettingDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(SET_IRREDUCIBLE_BALANCE_TO_PRODUCT, dto);
 	}
 
 	@Override
-	public Mono<ResponseEntity<Void>> createAndSaveOperator(CreatingOperatorDto operatorDto) {
-		log.debug("Creating operator {}", operatorDto.operatorName);
-		String errorMessage = String.format("Operator %s already exist", operatorDto.operatorName);
-		return createPutRequest(OPERATOR_CREATE, operatorDto, errorMessage);
-
+	public Mono<String> createAndSaveOperator(CreatingOperatorDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(OPERATOR_CREATE, dto);
 	}
 
 	@Override
-	public void changeOperatorName(ChangeOperatorNameDto changeOperatorNameDto) {
-		// TODO Auto-generated method stub
-
+	public Mono<String> changeOperatorName(ChangeOperatorNameDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(CHANGE_OPERATOR_NAME, dto);
 	}
 
 	@Override
-	public void changeOperatorEmail(ChangeOperatorEmailDto changeOperatorEmailDto) {
-		// TODO Auto-generated method stub
-
+	public Mono<String> changeOperatorEmail(ChangeOperatorEmailDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(CHANGE_OPERATOR_EMAIL, dto);
 	}
 
 	@Override
-	public Mono<ResponseEntity<Void>> createAndSaveOperatorRole(CreatingOperatorRoleDto operatorRoleDto) {
-		log.debug("Creating role {}", operatorRoleDto.operatorRole);
-		String errorMessage = String.format("Operator %s already exist", operatorRoleDto.operatorRole);
-		return createPutRequest(ROLE_CREATE, operatorRoleDto, errorMessage);
-
-
+	public Mono<String> createAndSaveRole(CreatingRoleDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(ROLE_CREATE, dto);
 	}
 
 	@Override
-	public void changeRole(ChangeRoleDto changeRoleDto) {
-		// TODO Auto-generated method stub
-
+	public Mono<String> changeRole(ChangeRoleDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(CHANGE_ROLE, dto);
 	}
 
 	@Override
-	public String setOperatorToRole(OperatorToRoleSettingDto operatorToRoleSettingDto) {
-		// TODO Auto-generated method stub
-		return null;
+	public Mono<String> setOperatorToRole(OperatorToRoleSettingDto dto, String username) {
+		searchIdByNameService.searchExecutorOperatorIdByUsernameAndSetToDto(username, dto);
+		return postRequest(SET_OPERATOR_TO_ROLE, dto);
 	}
 
 }

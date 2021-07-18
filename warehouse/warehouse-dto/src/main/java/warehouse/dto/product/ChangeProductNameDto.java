@@ -2,14 +2,19 @@ package warehouse.dto.product;
 
 import javax.validation.constraints.*;
 import lombok.*;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class ChangeProductNameDto {
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class ChangeProductNameDto extends ParentDto {
 	@Min(1)
-	public long productId;
+	private long productId;
 	@NotEmpty
-	String newProductName;
+	private String newProductName;
+	private long executorOperatorId;
 }

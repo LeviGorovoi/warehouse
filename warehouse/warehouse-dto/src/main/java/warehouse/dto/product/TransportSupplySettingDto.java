@@ -3,17 +3,22 @@ package warehouse.dto.product;
 import java.util.Date;
 import javax.validation.constraints.*;
 import lombok.*;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class TransportSupplySettingDto {
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class TransportSupplySettingDto extends ParentDto {
 	@FutureOrPresent
 	@NotNull
-	public Date transportSupplySettingDate;
+	@EqualsAndHashCode.Exclude
+	private Date settingDate;
 	@Min(1)
-	public long productId;
-	public int transportSupply; // in days
-
+	private long productId;
+	private int transportSupply; // in days
+	private long executorOperatorId;
 }

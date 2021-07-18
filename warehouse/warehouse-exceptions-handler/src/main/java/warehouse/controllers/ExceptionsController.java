@@ -48,8 +48,18 @@ public class ExceptionsController {
 	String notFounHandler(NotFoundException e) {
 		return processingExceptions(e);
 	}
-
-
+	
+	@ExceptionHandler(InvalidCredentialException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	String invalidCredentialExceptionHandler(InvalidCredentialException e) {
+		return processingExceptions(e);
+	}
+	
+	@ExceptionHandler(PasswordExpiredException.class)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	String passwordExpiredHandler(PasswordExpiredException e) {
+		return processingExceptions(e);
+	}
 	
 	@ExceptionHandler(WebExchangeBindException.class)
 	public ResponseEntity<Object> WebExchangeBindExceptionHandler(WebExchangeBindException ex) {
@@ -63,7 +73,7 @@ public class ExceptionsController {
 	}
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	String notFounHandler(Exception e) {
+	String OtherExceptionHandler(Exception e) {
 		return processingExceptions(e);
 	}
 }

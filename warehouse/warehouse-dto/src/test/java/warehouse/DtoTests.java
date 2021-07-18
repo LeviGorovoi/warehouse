@@ -87,7 +87,7 @@ public class DtoTests {
 //	ContainerTests
 	@Test
 	void NormalContainerTest() throws JsonProcessingException, Exception{
-		TestController.containerExp = new CreatingContainerDto("123");
+		TestController.containerExp = CreatingContainerDto.builder().address("123").build();
 		int statusExp = 200;
 		String HttpAddress = "/container";
 		makeTest(statusExp, HttpAddress, TestController.containerExp);
@@ -95,7 +95,7 @@ public class DtoTests {
 
 	@Test
 	void wrongAddressContainerTest() throws JsonProcessingException, Exception{
-		TestController.containerExp = new CreatingContainerDto("");
+		TestController.containerExp = CreatingContainerDto.builder().address("").build();
 		int statusExp = 400;
 		String HttpAddress = "/container";
 		makeTest(statusExp, HttpAddress, TestController.containerExp);
@@ -105,21 +105,21 @@ public class DtoTests {
 //	productTests
 	@Test
 	void NormalProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new CreatingProductDto("123", 1);
+		TestController.productExp = CreatingProductDto.builder().productName("123").numberInContainer(1).build();
 		int statusExp = 200;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
 	}
 	@Test
 	void wrongNameProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new CreatingProductDto(null, 1);
+		TestController.productExp = CreatingProductDto.builder().productName(null).numberInContainer(1).build();;
 		int statusExp = 400;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
 	}
 	@Test
 	void wrongNumberInContainerProductTest() throws JsonProcessingException, Exception{
-		TestController.productExp = new CreatingProductDto("123", -3);
+		TestController.productExp = CreatingProductDto.builder().productName("123").numberInContainer(-3).build();
 		int statusExp = 400;
 		String HttpAddress = "/product";
 		makeTest(statusExp, HttpAddress, TestController.productExp);
@@ -129,21 +129,21 @@ public class DtoTests {
 //	transportSupplyDtoTests
 	@Test
 	void NormalTransportSupplyDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, -1);
+		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, -1,1);
 		int statusExp = 200;
 		String HttpAddress = "/product/transportation/parameters";
 		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
 	}
 	@Test
 	void wrongDateTransportSupplyDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().minusSeconds(1000)), 1, -1);
+		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().minusSeconds(1000)), 1, -1,1);
 		int statusExp = 400;
 		String HttpAddress = "/product/transportation/parameters";
 		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
 	}
 	@Test
 	void wrongProductIdTransportSupplyDtoTest() throws JsonProcessingException, Exception{
-		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().plusSeconds(1000)), -1, -1);
+		TestController.transportSupplyDtoExp = new TransportSupplySettingDto(Date.from(Instant.now().plusSeconds(1000)), -1, -1,1);
 		int statusExp = 400;
 		String HttpAddress = "/product/transportation/parameters";
 		makeTest(statusExp, HttpAddress, TestController.transportSupplyDtoExp);
@@ -250,35 +250,35 @@ public class DtoTests {
 //	orderDtoTests
 	@Test
 	void NormalIrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, 1);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, 1,1);
 		int statusExp = 200;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
 	@Test
 	void wrongIrreducibleBalanceSettingDateIrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().minusSeconds(1000)), 1, 1);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().minusSeconds(1000)), 1, 1,1);
 		int statusExp = 400;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
 	@Test
 	void nullIrreducibleBalanceSettingDateIrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(null, 1, 1);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(null, 1, 1,1);
 		int statusExp = 400;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
 	@Test
 	void wrongProductIdIrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), -1, 1);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), -1, 1,1);
 		int statusExp = 400;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);
 	}
 	@Test
 	void wrongirreducibleBalanceAmountrreducibleBalanceTest() throws JsonProcessingException, Exception{
-		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, -1);
+		TestController.irreducibleBalanceExp = new IrreducibleBalanceSettingDto(Date.from(Instant.now().plusSeconds(1000)), 1, -1,1);
 		int statusExp = 400;
 		String HttpAddress = "/irreducible/balance";
 		makeTest(statusExp, HttpAddress, TestController.irreducibleBalanceExp);

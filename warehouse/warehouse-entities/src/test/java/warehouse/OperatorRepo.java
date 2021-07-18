@@ -15,7 +15,7 @@ public interface OperatorRepo extends JpaRepository<Operator, Long> {
 	@Query("select o from Operator o where o.operatorName=:operator_name")
 	Operator findOperatorWithRoles(@Param("operator_name") String operator);
 	
-	@Query("select r.role from OperatorRole r join r.operator o where o.operatorName=:operator_name")
-	Set<String> getOperatorRolesFromOperator(@Param("operator_name") String operatorName);
+	@Query("select r.role from Role r where r.operator.operatorName=:operator_name")
+	Set<String> getRolesFromOperator(@Param("operator_name") String operatorName);
 
 }

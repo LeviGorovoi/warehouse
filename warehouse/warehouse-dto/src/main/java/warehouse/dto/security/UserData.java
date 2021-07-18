@@ -1,25 +1,21 @@
 package warehouse.dto.security;
 
-import java.util.Set;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.time.LocalDate;
 
-@AllArgsConstructor
+import lombok.*;
+
+
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
 @EqualsAndHashCode
 @ToString
 @Builder
+public class UserData  {
+String username;
+String password;
 @Setter
-@Getter
-public class UserData {
-private String operatorName;
-private String userName;
-private String password;
-private String[] operatorRoles;
+LocalDate passwordExpiration;
+String[] roles;
 }

@@ -1,15 +1,21 @@
 package warehouse.dto.container;
 
+
 import javax.validation.constraints.*;
 import lombok.*;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class ChangeContainerAddressDto {
+@EqualsAndHashCode(callSuper=true)
+@Builder
+@Setter
+@Getter
+public class ChangeContainerAddressDto extends ParentDto {
 @Min(1)
-public long containerId;
+private long containerId;
 @NotEmpty
-String newAddress;
+private String newAddress;
+private long executorOperatorId;
 }

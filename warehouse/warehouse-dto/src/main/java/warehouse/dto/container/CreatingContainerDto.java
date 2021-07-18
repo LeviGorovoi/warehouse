@@ -3,12 +3,17 @@ package warehouse.dto.container;
 
 import javax.validation.constraints.*;
 import lombok.*;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class CreatingContainerDto {
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class CreatingContainerDto extends ParentDto {
 	@NotEmpty
-	public String address;
+	private String address;
+	private long executorOperatorId;
 }

@@ -2,14 +2,19 @@ package warehouse.dto.operator;
 
 import javax.validation.constraints.*;
 import lombok.*;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class ChangeOperatorNameDto {
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class ChangeOperatorNameDto extends ParentDto {
 	@Min(1)
-	public long operatorId;
+	private long operatorId;
 	@NotEmpty
-	String newOperatorName;
+	private String newOperatorName;
+	private long executorOperatorId;
 }

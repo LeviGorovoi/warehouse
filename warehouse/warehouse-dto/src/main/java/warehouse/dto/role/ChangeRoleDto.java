@@ -2,14 +2,19 @@ package warehouse.dto.role;
 
 import javax.validation.constraints.*;
 import lombok.*;
+import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class ChangeRoleDto {
+@EqualsAndHashCode(callSuper = true)
+@Builder
+@Setter
+@Getter
+public class ChangeRoleDto extends ParentDto {
 	@Min(1)
-	public long operatorRoleId;
+	private long roleId;
 	@NotEmpty
-	String newRole;
+	private String newRole;
+	private long executorOperatorId;
 }

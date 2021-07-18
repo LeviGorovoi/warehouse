@@ -8,12 +8,6 @@
   <artifactId>warehouse-documents</artifactId>
   <dependencies>
   <dependency>
-  <groupId>com.warehouse</groupId>
-  <artifactId>warehouse-dto</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  
-  </dependency>
-  <dependency>
 <groupId>com.warehouse</groupId>
  <artifactId>warehouse-dto</artifactId>
  <version>0.0.1-SNAPSHOT</version>
