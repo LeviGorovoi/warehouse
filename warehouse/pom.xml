@@ -44,5 +44,6 @@
 		<module>warehouse-exceptions-handler</module>
 		<module>warehouse-state-back-office</module>
 		<module>warehouse-gatewa</module>
+		<module>warehouse-db-populator</module>
 	</modules>
 </project>

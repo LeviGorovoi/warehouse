@@ -17,11 +17,10 @@ import warehouse.dto.enums.*;
 @Builder
 public class OperatorToRoleSetting {
 	@Id
-	private ObjectId OperatorToRoleSettingId = null;
+	private ObjectId id = null;
 	private LocalDateTime documentDateTime;
-	private LocalDateTime roleSettingDate;
+	private LocalDateTime SettingDate;
 	private long operatorId;
 	private long operatorRoleId;
-	private CreatingMethodEnum creatingMethod;
 	private int operatorManagerId;
 }

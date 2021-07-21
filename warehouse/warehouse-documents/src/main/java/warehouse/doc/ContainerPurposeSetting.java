@@ -10,9 +10,10 @@ import lombok.*;
 import warehouse.dto.enums.*;
 
 @Document(collection = "container_purpose_setting")
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Builder
 @EqualsAndHashCode
 public class ContainerPurposeSetting {

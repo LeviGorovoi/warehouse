@@ -1,23 +1,26 @@
-package warehouse.doc;
+package warehouse.doc.product;
 
 import java.time.LocalDateTime;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.*;
 
 @Document(collection = "transport_supply_setting")
-@AllArgsConstructor()
-@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@EqualsAndHashCode
 @Builder
-public class TransportSupplySetting {
-	@Id
+@Setter
+@Getter
+public class TransportSupplySettingDoc {
+	@EqualsAndHashCode.Exclude
 	private ObjectId id = null;
 	private LocalDateTime documentDateTime;
-	private LocalDateTime SettingDate;
+	private LocalDateTime settingDate;
 	private long productId;
-	private int transportSupply;
-	private int operatorId;
+	private int transportSupply; // in days
+	private long executorOperatorId;
 }
