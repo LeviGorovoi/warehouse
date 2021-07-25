@@ -7,7 +7,7 @@ import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Setter
@@ -17,5 +17,4 @@ public class CreatingOperatorDto extends ParentDto {
 	private String operatorName;
 	@NotEmpty
 	private String operatorEmail;
-	private long executorOperatorId;
 }

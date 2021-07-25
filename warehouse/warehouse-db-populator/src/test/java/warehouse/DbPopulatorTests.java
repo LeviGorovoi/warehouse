@@ -32,7 +32,7 @@ public class DbPopulatorTests {
 	
 	@Test
 	void DbPopulatorTest() {
-		CreatingRoleDto creatingRoleDto = CreatingRoleDto.builder().role(ROLE).executorOperatorId(125).build();
+		CreatingRoleDto creatingRoleDto = CreatingRoleDto.builder().role(ROLE).build();
 		JsonForJournalingDto jsonForJournalingDto = new JsonForJournalingDto();
 		try {
 			String dtoForDocJson = objectMapper.writeValueAsString(creatingRoleDto);

@@ -15,7 +15,7 @@ import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Setter
@@ -28,7 +28,5 @@ public class IrreducibleBalanceSettingDto extends ParentDto {
 	@Min(1)
 	private long productId;
 	@Min(0)
-	private int irreducibleBalance;
-	private long executorOperatorId;
-	
+	private int irreducibleBalance;	
 }

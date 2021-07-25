@@ -7,7 +7,7 @@ import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper=true)
 @EqualsAndHashCode(callSuper=true)
 @Builder
 @Setter
@@ -17,5 +17,4 @@ public class ChangeContainerAddressDto extends ParentDto {
 private long containerId;
 @NotEmpty
 private String newAddress;
-private long executorOperatorId;
 }

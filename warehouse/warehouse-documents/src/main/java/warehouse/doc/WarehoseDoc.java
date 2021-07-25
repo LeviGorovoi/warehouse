@@ -22,6 +22,6 @@ public class WarehoseDoc {
 	private ObjectId id = null;
 	@EqualsAndHashCode.Exclude
 	private LocalDateTime documentDateTime;
-	String incomingDtoType;
+	private String incomingDtoType;
 	private ParentDto incomingDto;
 }

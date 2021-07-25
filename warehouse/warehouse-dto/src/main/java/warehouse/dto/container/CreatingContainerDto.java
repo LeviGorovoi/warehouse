@@ -7,7 +7,7 @@ import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Setter
@@ -15,5 +15,4 @@ import warehouse.dto.ParentDto;
 public class CreatingContainerDto extends ParentDto {
 	@NotEmpty
 	private String address;
-	private long executorOperatorId;
 }

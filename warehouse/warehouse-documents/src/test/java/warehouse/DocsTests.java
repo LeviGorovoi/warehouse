@@ -12,7 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import warehouse.doc.*;
-import warehouse.dto.enums.*;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes= {ContainerPurposeSettingRepo.class, InventoryRepo.class, MovementDocRepo.class,
@@ -29,20 +28,8 @@ MovementDocRepo movementDocRepo;
 @Autowired
 OrderRepo orderRepo;
 @Autowired
-OperatorToRoleSetting operatorToRoleSetting;
-@Autowired
 TransportSupplySettingRepo transportSupplySettingRepo;
 @Test
 void docsTest() {
-	ContainerPurposeSetting containerPurposeSetting = ContainerPurposeSetting.builder().containerId(1)
-			.containerPurposeSettingDate(LocalDateTime.of(2021, 12, 31, 12, 0))
-			.creatingMethod(CreatingMethodEnum.BY_OPERATOR)
-			.documentDateTime(LocalDateTime.of(2021, 05, 30, 23, 33))
-			.operatorId(1).productId(0)
-			.build();
-	
-	containerPurposeSettingRepo.save(containerPurposeSetting).block();
-	ContainerPurposeSetting actual = containerPurposeSettingRepo.findAll().blockFirst();
-	assertEquals(containerPurposeSetting, actual);
 }
 }

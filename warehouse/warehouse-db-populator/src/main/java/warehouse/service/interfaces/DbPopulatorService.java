@@ -8,5 +8,5 @@ import warehouse.doc.WarehoseDoc;
 import warehouse.dto.JsonForJournalingDto;
 
 public interface DbPopulatorService {
-Mono<WarehoseDoc> saveDocInDb(JsonForJournalingDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException;
+void saveDocInDb(JsonForJournalingDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException;
 }

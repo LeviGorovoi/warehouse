@@ -9,7 +9,7 @@ import warehouse.dto.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper=true)
 @EqualsAndHashCode(callSuper=true)
 @Builder
 @Setter
@@ -23,6 +23,4 @@ public class OperatorToRoleSettingDto extends ParentDto {
 	private long roleId;
 	@Min(1)
 	private long operatorId;
-	private long executorOperatorId;
-	
 }

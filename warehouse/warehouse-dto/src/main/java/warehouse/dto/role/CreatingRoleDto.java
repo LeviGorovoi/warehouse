@@ -5,9 +5,9 @@ import javax.validation.constraints.NotEmpty;
 import lombok.*;
 import warehouse.dto.ParentDto;
 
-@AllArgsConstructor
+@AllArgsConstructor()
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Setter
@@ -15,5 +15,4 @@ import warehouse.dto.ParentDto;
 public class CreatingRoleDto extends ParentDto {
 	@NotEmpty
 	private String role;
-	private long executorOperatorId;
 }

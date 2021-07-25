@@ -13,7 +13,7 @@ import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Setter
@@ -23,5 +23,4 @@ public class CreatingProductDto extends ParentDto {
 	private String productName;
 	@Min(1)
 	private int numberInContainer;
-	private long executorOperatorId;
 }

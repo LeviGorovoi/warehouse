@@ -14,6 +14,7 @@ import reactor.core.publisher.Mono;
 import warehouse.doc.WarehoseDoc;
 import warehouse.dto.JsonForJournalingDto;
 import warehouse.dto.ParentDto;
+import warehouse.dto.role.*;
 import warehouse.repo.DocsDbPopulatorRepo;
 
 @Service
@@ -28,7 +29,7 @@ public class DbPopulatorServiceImpl implements DbPopulatorService {
 		log.debug("getDocFromJsonForJournalingDto: JsonForJournalingDtoJson {} received", jsonDto);
 		String dtoForDocJson = jsonDto.getJsonForJournaling();
 		Class<?> dtoForDocJsonClass = Class.forName(jsonDto.getClassName());
-		ParentDto dtoForDoc = (ParentDto) mapper.readValue(dtoForDocJson, dtoForDocJsonClass);
+		ParentDto dtoForDoc =  (ParentDto) mapper.readValue(dtoForDocJson, dtoForDocJsonClass);
 		WarehoseDoc doc = WarehoseDoc.builder().documentDateTime(LocalDateTime.now()).incomingDto(dtoForDoc)
 				.incomingDtoType(dtoForDocJsonClass.getSimpleName()).build();
 		log.debug("getDocFromJsonForJournalingDto: doc {}", doc.toString());
@@ -36,10 +37,10 @@ public class DbPopulatorServiceImpl implements DbPopulatorService {
 	}
 
 	@Override
-	public Mono<WarehoseDoc> saveDocInDb(JsonForJournalingDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException {
+	public void saveDocInDb(JsonForJournalingDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException {
 		WarehoseDoc doc = getDocFromJsonForJournalingDto(jsonDto);
-		return repo.save(doc).doOnSuccess(d->{
-			log.debug("saveDocInDb: doc {}", d.toString());
+		repo.save(doc).subscribe(d->{
+			log.debug("saveDocInDb: doc {}", d.toString());		
 		});
 	}
 

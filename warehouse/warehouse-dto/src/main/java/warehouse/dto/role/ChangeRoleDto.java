@@ -6,7 +6,7 @@ import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Setter
@@ -16,5 +16,5 @@ public class ChangeRoleDto extends ParentDto {
 	private long roleId;
 	@NotEmpty
 	private String newRole;
-	private long executorOperatorId;
+	
 }

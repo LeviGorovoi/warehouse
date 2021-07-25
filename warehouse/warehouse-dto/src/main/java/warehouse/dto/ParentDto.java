@@ -7,6 +7,7 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @Setter
+@Getter
 public class ParentDto {
-long executorOperatorId;
+private long executorOperatorId;
 }

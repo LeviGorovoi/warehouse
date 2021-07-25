@@ -6,7 +6,7 @@ import warehouse.dto.ParentDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Builder
 @Setter
@@ -16,5 +16,4 @@ public class ChangeProductNameDto extends ParentDto {
 	private long productId;
 	@NotEmpty
 	private String newProductName;
-	private long executorOperatorId;
 }

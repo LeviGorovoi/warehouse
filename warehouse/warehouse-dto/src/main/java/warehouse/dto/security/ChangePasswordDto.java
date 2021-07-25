@@ -1,7 +1,5 @@
 package warehouse.dto.security;
 
-import java.time.LocalDate;
-import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 
