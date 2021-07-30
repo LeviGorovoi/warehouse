@@ -1,6 +1,5 @@
 package warehouse;
 
-import java.time.LocalDateTime;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,21 +13,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import warehouse.doc.*;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes= {ContainerPurposeSettingRepo.class, InventoryRepo.class, MovementDocRepo.class,
-		OrderRepo.class, OperatorToRoleSettingRepo.class, TransportSupplySettingRepo.class})
+@ContextConfiguration(classes= { InventoryRepo.class, MovementDocRepo.class,
+		OrderRepo.class})
 @EnableAutoConfiguration 
 @AutoConfigureDataMongo
 public class DocsTests {
-@Autowired
-ContainerPurposeSettingRepo containerPurposeSettingRepo;
+
 @Autowired
 InventoryRepo inventoryRepo;
 @Autowired
 MovementDocRepo movementDocRepo;
 @Autowired
 OrderRepo orderRepo;
-@Autowired
-TransportSupplySettingRepo transportSupplySettingRepo;
+
 @Test
 void docsTest() {
 }

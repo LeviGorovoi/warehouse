@@ -45,5 +45,6 @@
 		<module>warehouse-state-back-office</module>
 		<module>warehouse-gatewa</module>
 		<module>warehouse-db-populator</module>
+		<module>warehouse-config-server</module>
 	</modules>
 </project>

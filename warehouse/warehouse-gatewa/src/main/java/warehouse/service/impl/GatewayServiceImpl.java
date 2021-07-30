@@ -18,10 +18,10 @@ import warehouse.service.interfaces.GatewayService;
 @Service
 @Slf4j
 public class GatewayServiceImpl implements GatewayService {
-	@Value("${app-services-allowed:  warehouse-state-back:9091, security:9092}")
+	@Value("${app-services-allowed:  warehouse-state-back:9091}")
 	List<String> allowedServices;
 	HashMap<String, String> mapServices; // key - service name, value - base URL
-	@Value("${app-localhost:true}")
+	@Value("${app-localhost:false}")
 	boolean isLocalhost;
 
 	@Override
@@ -48,7 +48,7 @@ public class GatewayServiceImpl implements GatewayService {
 				}else {
 					res +="?username="+username;
 				}			
-			log.debug("resulted uri: {}", res);
+			log.debug("resulted uri+: {}", res);
 
 		}
 		return res;
@@ -76,6 +76,6 @@ public class GatewayServiceImpl implements GatewayService {
 					"localhost" : serviceName, port);
 			mapServices.put(serviceName, baseUrl);
 		});
-		log.debug("isLocalhost: {}, mapServices: {}",isLocalhost, mapServices);	
+		log.debug("isLocalhost+: {}, mapServices: {}",isLocalhost, mapServices);	
 }
 }

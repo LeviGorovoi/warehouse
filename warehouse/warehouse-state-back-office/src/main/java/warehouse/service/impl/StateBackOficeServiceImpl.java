@@ -2,6 +2,7 @@
 package warehouse.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,9 @@ import warehouse.dto.role.*;
 public class StateBackOficeServiceImpl implements StateBackOficeService {
 	@Autowired
 	SearchIdByName searchIdByNameService;
-	WebClient client = WebClient.create("http://localhost:9090");
+	@Value("${app-localhost:false}")
+	boolean isLocalhost;
+	WebClient client = WebClient.create(isLocalhost?"http://localhost:9090":"http://warehouse-configurator:9090");
 
 
 	private <T> Mono<String> postRequest(String uri, T bodyValue){

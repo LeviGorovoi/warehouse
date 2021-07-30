@@ -7,4 +7,5 @@ String REGISTER ="/register";
 String PASSWORD_CHANGE = "/password/change";
 String LOGIN ="/login";
 String USER_DATA = "user/data";
+String GATEWAY = "/gateway";
 }
