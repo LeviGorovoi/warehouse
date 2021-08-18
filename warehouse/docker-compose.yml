@@ -1,16 +1,30 @@
 version: '3.7'
 
 services:
+  config-server:
+    build:
+       warehouse-config-server
+    mem_limit: 350m
+    mem_reservation: 100M
+    
+  discovery-server:
+    build:
+       warehouse-discovery-server
+    ports:
+    - "8761:8761"
+    mem_limit: 350m
+    mem_reservation: 100M 
+   
   gateway:
-   build:
-     warehouse-gatewa
-   ports:
-   - "9092:9092"
-   mem_limit: 350m
-   mem_reservation: 100M
-   environment:
-   - ADMIN_PASSWORD=admin123
-   - POSTGRES_PASSWORD=a1bf99b6a03b1709b5a7ee38729a5e3e3989b62209c4fb2fee0f5be1a101b410
+    build:
+       warehouse-gatewa
+    ports:
+    - "9092:9092"
+    mem_limit: 350m
+    mem_reservation: 100M
+    environment:
+    - ADMIN_PASSWORD=admin123
+    - POSTGRES_PASSWORD=a1bf99b6a03b1709b5a7ee38729a5e3e3989b62209c4fb2fee0f5be1a101b410
       
   db-populator:
     build:
@@ -19,23 +33,26 @@ services:
     mem_reservation: 100M   
     environment:
     - KAFKA_PASSWORD=hOmdVvrtuZey3H1h-3zCZiMdcteZ-g5v
-    - MONGO_PASSWORD=Semtember1      
-      
-  warehouse-state-back:
-   build:
-     warehouse-state-back-office
-   mem_limit: 350m
-   mem_reservation: 100M     
-   environment:
-   - POSTGRES_PASSWORD=a1bf99b6a03b1709b5a7ee38729a5e3e3989b62209c4fb2fee0f5be1a101b410
+    - MONGO_PASSWORD=Semtember1 
       
   warehouse-configurator:
-   build:
-     warehouse-warehouse-configurator
-   mem_limit: 350m
-   mem_reservation: 100M   
-   environment:
-   - KAFKA_PASSWORD=hOmdVvrtuZey3H1h-3zCZiMdcteZ-g5v
-   - POSTGRES_PASSWORD=a1bf99b6a03b1709b5a7ee38729a5e3e3989b62209c4fb2fee0f5be1a101b410
-
+    build:
+      warehouse-warehouse-configurator
+    mem_limit: 350m
+    mem_reservation: 100M   
+    environment:
+    - KAFKA_PASSWORD=hOmdVvrtuZey3H1h-3zCZiMdcteZ-g5v
+    - POSTGRES_PASSWORD=a1bf99b6a03b1709b5a7ee38729a5e3e3989b62209c4fb2fee0f5be1a101b410   
+    
+  warehouse-state-back:
+    build:
+      warehouse-state-back-office
+    depends_on:
+    - warehouse-configurator
+    mem_limit: 350m
+    mem_reservation: 100M     
+    environment:
+    - POSTGRES_PASSWORD=a1bf99b6a03b1709b5a7ee38729a5e3e3989b62209c4fb2fee0f5be1a101b410
       
+
+

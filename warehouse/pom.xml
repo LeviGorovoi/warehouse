@@ -46,5 +46,7 @@
 		<module>warehouse-gatewa</module>
 		<module>warehouse-db-populator</module>
 		<module>warehouse-config-server</module>
+		<module>warehouse-discovery-server</module>
+		<module>warehouse-loadbalancer</module>
 	</modules>
 </project>

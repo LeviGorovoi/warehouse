@@ -2,33 +2,54 @@
 package warehouse.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import lombok.extern.slf4j.Slf4j;
+
 import static warehouse.dto.api.WarehouseConfiguratorApi.*;
+
+import javax.annotation.PostConstruct;
 
 import reactor.core.publisher.Mono;
 import warehouse.service.interfaces.SearchIdByName;
 import warehouse.service.interfaces.StateBackOficeService;
+
 import warehouse.dto.container.*;
 import warehouse.dto.operator.*;
 import warehouse.dto.product.*;
 import warehouse.dto.role.*;
-
+import warehouse.loadbalancer.LoadBalancer;
+@Slf4j
 @Service
 public class StateBackOficeServiceImpl implements StateBackOficeService {
 	@Autowired
 	SearchIdByName searchIdByNameService;
-	@Value("${app-localhost:false}")
-	boolean isLocalhost;
-	WebClient client = WebClient.create(isLocalhost?"http://localhost:9090":"http://warehouse-configurator:9090");
+	@Autowired
+	LoadBalancer loadbalanser;
 
+	WebClient client;
+
+	@PostConstruct
+	void getClient() throws InterruptedException {
+		log.debug("@PostConstruct entrance");
+		log.debug("loadbalanser.getBaseUrl: {}", loadbalanser.getBaseUrl("warehouse-configurator"));		
+		while(loadbalanser.getBaseUrl("warehouse-configurator")==null) {
+			log.debug("Sleep entrance");
+			Thread.sleep(1000);
+		}	
+		String baseUri = loadbalanser.getBaseUrl("warehouse-configurator");
+		client = WebClient.create(baseUri);
+		log.debug("baseUri: {}", baseUri);
+	}
 
 	private <T> Mono<String> postRequest(String uri, T bodyValue){
+		
 		return client.post().uri(uri).bodyValue(bodyValue)
 				.exchangeToMono(response -> {
+					log.debug("postRequest uri: {}", uri);
 			  if (response.statusCode()
 					    .equals(HttpStatus.OK)) {
 					      return response.bodyToMono(String.class);
