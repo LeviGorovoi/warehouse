@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import warehouse.dto.ParentDto;
-import warehouse.exceptions.NotFoundException;
+//import warehouse.exceptions.NotFoundException;
 import warehouse.repo.OperatorStateBackOficeRepo;
 import warehouse.service.interfaces.SearchIdByName;
 
@@ -19,10 +19,11 @@ public class SearchIdByNameImpl implements SearchIdByName {
 	public void searchExecutorOperatorIdByUsernameAndSetToDto(String username, ParentDto dto) {
 		log.debug("searchExecutorOperatorIdByUsernameAndSetToDto: dto {} by {}, username {} received", dto.toString(),
 				dto.getClass(), username);
-		long executorOperatorId = operatorRepo.findOperatorIdByUsername(username);
+		Long executorOperatorId = operatorRepo.findOperatorIdByUsername(username);
 		log.debug("searchExecutorOperatorIdByUsernameAndSetToDto:  executorOperatorId {}", executorOperatorId);
-		if (executorOperatorId == 0) {
-			throw new NotFoundException(String.format("No operator with username %s", username));
+		if (executorOperatorId == null) {
+//			throw new NotFoundException(String.format("No operator with username %s", username));
+			executorOperatorId = (long) 0;
 		}
 		dto.setExecutorOperatorId(executorOperatorId);
 		log.debug("searchExecutorOperatorIdByUsernameAndSetToDto: dto {} by {} returned ", dto.toString(),

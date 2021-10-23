@@ -88,6 +88,7 @@ public class SecurityServiceImpl implements SecurityService {
 	}
 
 	private <T> Mono<T> checkIfValidPassword(String password, String referencePassword, T obj, String errorMessage) {
+		log.debug("checkIfValidPassword: password: {}, referencePassword: {}", password, referencePassword);
 		return passwordEncoder.matches(password, referencePassword) ? Mono.just(obj)
 				: Mono.error(new InvalidCredentialException(errorMessage));
 	}

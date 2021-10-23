@@ -18,6 +18,6 @@ public interface OperatorStateBackOficeRepo extends JpaRepository<Operator, Long
 	Set<String> getRolesFromOperator(@Param("operator_name") String operatorName);
 
 	@Query("select o.operatorId from Operator o where o.username=:username")
-	long findOperatorIdByUsername(String username);
+	Long findOperatorIdByUsername(String username);
 
 }

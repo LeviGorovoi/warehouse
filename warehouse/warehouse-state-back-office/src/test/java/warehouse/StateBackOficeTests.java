@@ -22,6 +22,7 @@ import warehouse.repo.ContainerStateBackOficeRepo;
 import warehouse.repo.OperatorStateBackOficeRepo;
 import warehouse.repo.ProductStateBackOficeRepo;
 import warehouse.repo.RoleStateBackOficeRepo;
+import warehouse.service.interfaces.SearchIdByName;
 import warehouse.service.interfaces.StateBackOficeService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,6 +42,7 @@ import org.junit.jupiter.api.*;
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StateBackOficeTests {
-
+@Autowired
+	SearchIdByName seachService;
 
 }
