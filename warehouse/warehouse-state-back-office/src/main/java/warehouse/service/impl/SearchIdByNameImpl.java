@@ -19,12 +19,11 @@ public class SearchIdByNameImpl implements SearchIdByName {
 	public void searchExecutorOperatorIdByUsernameAndSetToDto(String username, ParentDto dto) {
 		log.debug("searchExecutorOperatorIdByUsernameAndSetToDto: dto {} by {}, username {} received", dto.toString(),
 				dto.getClass(), username);
-		Long executorOperatorId = operatorRepo.findOperatorIdByUsername(username);
-		log.debug("searchExecutorOperatorIdByUsernameAndSetToDto:  executorOperatorId {}", executorOperatorId);
-		if (executorOperatorId == null) {
-//			throw new NotFoundException(String.format("No operator with username %s", username));
-			executorOperatorId = (long) 0;
+		Long executorOperatorId = (long) 0;
+		if (!username.equalsIgnoreCase("admin")) {
+			executorOperatorId = operatorRepo.findOperatorIdByUsername(username);
 		}
+		log.debug("searchExecutorOperatorIdByUsernameAndSetToDto:  executorOperatorId {}", executorOperatorId);
 		dto.setExecutorOperatorId(executorOperatorId);
 		log.debug("searchExecutorOperatorIdByUsernameAndSetToDto: dto {} by {} returned ", dto.toString(),
 				dto.getClass());

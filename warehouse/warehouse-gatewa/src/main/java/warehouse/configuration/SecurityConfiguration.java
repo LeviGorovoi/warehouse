@@ -36,7 +36,7 @@ public class SecurityConfiguration {
 
 	public Map<String, UserData> createUsersInMemory() {
 		Map<String, UserData> map = new HashMap<>();
-		UserData admin = UserData.builder().roles(new String[] { "ROLE_ADMIN" }).password("{noop}" + passwordAdmin)
+		UserData admin = UserData.builder().roles(new String[] { "ADMIN" }).password("{noop}" + passwordAdmin)
 				.username(usernaneAdmin).build();
 		map.put(usernaneAdmin, admin);
 		return map;

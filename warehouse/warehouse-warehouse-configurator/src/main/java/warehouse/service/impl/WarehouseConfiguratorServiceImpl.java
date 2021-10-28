@@ -41,7 +41,6 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 	ProductWarehouseConfiguratorRepo productRepo;
 	StreamBridge streamBridge;
 	ObjectMapper objectMapper;
-	RepositoryHelper repositoryHelper;
 
 	public WarehouseConfiguratorServiceImpl(ContainerWarehouseConfiguratorRepo containerRepo,
 			OperatorWarehouseConfiguratorRepo operatorRepo, RoleWarehouseConfiguratorRepo roleRepo,
