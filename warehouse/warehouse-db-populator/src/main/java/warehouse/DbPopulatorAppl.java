@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.extern.slf4j.Slf4j;
-import warehouse.dto.JsonForJournalingDto;
+import warehouse.dto.JsonForKafkaDto;
 import warehouse.service.interfaces.DbPopulatorService;
 
 @SpringBootApplication
@@ -18,19 +18,20 @@ import warehouse.service.interfaces.DbPopulatorService;
 public class DbPopulatorAppl {
 	@Autowired
 	DbPopulatorService service;
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(DbPopulatorAppl.class, args);
 	}
+
 	@Bean
-	Consumer<JsonForJournalingDto> getJsonForJournalingDtoConsumer() {
+	Consumer<JsonForKafkaDto> getJsonForJournalingDtoConsumer() {
 		return t -> {
 			try {
 				service.saveDocInDb(t);
 			} catch (ClassNotFoundException | JsonProcessingException e) {
-log.debug(null);
+				log.debug("{}", e);
 			}
 		};
 	}
-	
+
 }

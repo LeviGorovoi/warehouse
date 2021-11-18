@@ -21,8 +21,8 @@ public class WarehouseConfiguratorController {
 	WarehouseConfiguratorService service;
 
 	@PostMapping(CONTAINER_CREATE)
-	Mono<String> createAndSaveContainer(@Valid @RequestBody CreatingContainerDto containerDto) {
-		return service.createAndSaveContainer(containerDto);
+	Mono<String> createAndSaveContainer(@Valid @RequestBody CreatingContainerDto dto) {
+		return service.createAndSaveContainer(dto);
 	}
 
 	@PostMapping(PRODUCT_CREATE)

@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.cloud.stream.binder.test.InputDestination;
 import org.springframework.cloud.stream.binder.test.OutputDestination;
 import org.springframework.cloud.stream.binder.test.TestChannelBinderConfiguration;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,7 +32,7 @@ import java.util.Date;
 import javax.validation.constraints.NotEmpty;
 
 import warehouse.service.interfaces.WarehouseConfiguratorService;
-import warehouse.dto.JsonForJournalingDto;
+import warehouse.dto.JsonForKafkaDto;
 import warehouse.dto.ParentDto;
 import warehouse.dto.container.*;
 import warehouse.dto.operator.*;
@@ -52,6 +54,8 @@ public class WarehouseConfiguratorTests {
 	private static final @NotEmpty String ROLE = "lkj";
 	@Value("${app-binding-name-docs:docs-out-0}")
 	String dtoForDocBindingName;
+	@Value("${app-binding-name-configurator:configurator-out-0}")
+	String logsProviderArtifact;
 
 	ObjectMapper mapper = new ObjectMapper();
 	@Autowired
@@ -67,7 +71,9 @@ public class WarehouseConfiguratorTests {
 	@Autowired
 	RoleWarehouseConfiguratorRepo roleRepo;
 	@Autowired
-	OutputDestination consumer;
+	OutputDestination consumer;	
+	@Autowired
+	InputDestination producer;
 
 	private <T> void normalPostTest(String uriStr, Object requestObj, T responseObj, Class<T> responseClass) {
 		testClient.post().uri(uriStr).contentType(MediaType.APPLICATION_JSON).bodyValue(requestObj).exchange()
@@ -82,14 +88,27 @@ public class WarehouseConfiguratorTests {
 	private void receiveFromClaudTest(ParentDto dtoExp)
 			throws JsonMappingException, JsonProcessingException, ClassNotFoundException {
 		Message<byte[]> message = consumer.receive(0, dtoForDocBindingName);
-		String JsonForJournalingDtoJson = new String(message.getPayload());
-		log.debug("receiveFromClaudTest: JsonForJournalingDtoJson {}", JsonForJournalingDtoJson);
-		JsonForJournalingDto json = mapper.readValue(JsonForJournalingDtoJson, JsonForJournalingDto.class);
-		String dtoForDocJson = json.getJsonForJournaling();
+		String JsonForKafkaDtoJson = new String(message.getPayload());
+		log.debug("receiveFromClaudTest: JsonForKafkaDtoJson {}", JsonForKafkaDtoJson);
+		JsonForKafkaDto json = mapper.readValue(JsonForKafkaDtoJson, JsonForKafkaDto.class);
+		String dtoForDocJson = json.getJsonDto();
 		Class<?> dtoForDocJsonClass = Class.forName(json.getClassName());
 		ParentDto dtoForDoc = (ParentDto) mapper.readValue(dtoForDocJson, dtoForDocJsonClass);
 		log.debug("receiveFromClaudTest: dtoForDoc {}", dtoForDoc.toString());
 		assertEquals(dtoExp, dtoForDoc);
+	}
+	
+	private void sendToClaudTest(ParentDto dtoExp) {
+		JsonForKafkaDto jsonForKafkaDto = new JsonForKafkaDto();
+		try {
+			String dtoForDocJson = mapper.writeValueAsString(dtoExp);
+			jsonForKafkaDto.setClassName(dtoExp.getClass().getName());
+			jsonForKafkaDto.setJsonDto(dtoForDocJson);
+			log.debug("sendToClaudTest: dtoForDocJson {}", dtoForDocJson);
+		} catch (JsonProcessingException e) {
+			log.debug("Object was not serialized");
+		}
+		producer.send(new GenericMessage<JsonForKafkaDto>(jsonForKafkaDto));
 	}
 
 //	Container Product Tests
@@ -108,6 +127,17 @@ public class WarehouseConfiguratorTests {
 		newContainer = CreatingContainerDto.builder().address(ADDRESS).build();
 		responseMessageExp = String.format("Container with address %s already exist", ADDRESS);
 		wrongPostTest(CONTAINER_CREATE, newContainer, responseMessageExp, String.class);
+		
+		
+	}
+	
+	@Test
+	@Order(14)
+	void createAndSaveContainerAUTOTest() throws JsonMappingException, JsonProcessingException, ClassNotFoundException {
+		CreatingContainerDto newContainerByAuto = CreatingContainerDto.builder().address(ADDRESS+"AUTO").build();
+		sendToClaudTest(newContainerByAuto);
+		Container containerAUTO = containerRepo.findByAddress(ADDRESS+"AUTO");
+		log.debug("createAndSaveContainerTest: containerAUTO {}", containerAUTO);
 	}
 
 	@Test

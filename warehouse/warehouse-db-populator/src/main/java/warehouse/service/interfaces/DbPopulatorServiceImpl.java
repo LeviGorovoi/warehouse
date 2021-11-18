@@ -10,11 +10,9 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 import warehouse.doc.WarehoseDoc;
-import warehouse.dto.JsonForJournalingDto;
+import warehouse.dto.JsonForKafkaDto;
 import warehouse.dto.ParentDto;
-import warehouse.dto.role.*;
 import warehouse.repo.DocsDbPopulatorRepo;
 
 @Service
@@ -24,21 +22,21 @@ public class DbPopulatorServiceImpl implements DbPopulatorService {
 	@Autowired
 	DocsDbPopulatorRepo repo;
 
-	WarehoseDoc getDocFromJsonForJournalingDto(JsonForJournalingDto jsonDto)
+	WarehoseDoc getDocFromJsonForKafkaDto(JsonForKafkaDto jsonForKafkaDto)
 			throws ClassNotFoundException, JsonMappingException, JsonProcessingException {
-		log.debug("getDocFromJsonForJournalingDto: JsonForJournalingDtoJson {} received", jsonDto);
-		String dtoForDocJson = jsonDto.getJsonForJournaling();
-		Class<?> dtoForDocJsonClass = Class.forName(jsonDto.getClassName());
-		ParentDto dtoForDoc =  (ParentDto) mapper.readValue(dtoForDocJson, dtoForDocJsonClass);
+		log.debug("getDocFromJsonForKafkaDto: jsonForKafkaDto {} received", jsonForKafkaDto);
+		String jsonDto = jsonForKafkaDto.getJsonDto();
+		Class<?> jsonDtoClass = Class.forName(jsonForKafkaDto.getClassName());
+		ParentDto dtoForDoc =  (ParentDto) mapper.readValue(jsonDto, jsonDtoClass);
 		WarehoseDoc doc = WarehoseDoc.builder().documentDateTime(LocalDateTime.now()).incomingDto(dtoForDoc)
-				.incomingDtoType(dtoForDocJsonClass.getSimpleName()).build();
-		log.debug("getDocFromJsonForJournalingDto: doc {}", doc.toString());
+				.incomingDtoType(jsonDtoClass.getSimpleName()).build();
+		log.debug("getDocFromJsonForKafkaDto: doc {}", doc.toString());
 		return doc;
 	}
 
 	@Override
-	public void saveDocInDb(JsonForJournalingDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException {
-		WarehoseDoc doc = getDocFromJsonForJournalingDto(jsonDto);
+	public void saveDocInDb(JsonForKafkaDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException {
+		WarehoseDoc doc = getDocFromJsonForKafkaDto(jsonDto);
 		repo.save(doc).subscribe(d->{
 			log.debug("saveDocInDb: doc {}", d.toString());		
 		});

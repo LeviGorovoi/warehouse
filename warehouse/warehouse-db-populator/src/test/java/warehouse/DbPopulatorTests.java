@@ -14,7 +14,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
-import warehouse.dto.JsonForJournalingDto;
+import warehouse.dto.JsonForKafkaDto;
 import warehouse.dto.role.CreatingRoleDto;
 import warehouse.repo.DocsDbPopulatorRepo;
 
@@ -33,16 +33,16 @@ public class DbPopulatorTests {
 	@Test
 	void DbPopulatorTest() {
 		CreatingRoleDto creatingRoleDto = CreatingRoleDto.builder().role(ROLE).build();
-		JsonForJournalingDto jsonForJournalingDto = new JsonForJournalingDto();
+		JsonForKafkaDto jsonForKafkaDto = new JsonForKafkaDto();
 		try {
 			String dtoForDocJson = objectMapper.writeValueAsString(creatingRoleDto);
-			jsonForJournalingDto.setClassName(creatingRoleDto.getClass().getName());
-			jsonForJournalingDto.setJsonForJournaling(dtoForDocJson);
+			jsonForKafkaDto.setClassName(creatingRoleDto.getClass().getName());
+			jsonForKafkaDto.setJsonDto(dtoForDocJson);
 			log.debug("DbPopulatorTest: dtoForDocJson {}", dtoForDocJson);
 		} catch (JsonProcessingException e) {
 			log.debug("Object was not serialized");
 		}
-		input.send(new GenericMessage<JsonForJournalingDto>(jsonForJournalingDto));
+		input.send(new GenericMessage<JsonForKafkaDto>(jsonForKafkaDto));
 		
 		
 	}

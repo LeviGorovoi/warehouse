@@ -20,11 +20,6 @@ import warehouse.service.interfaces.GatewayService;
 
 @RestController
 public class GatewayController {
-	@Value("${app-services-allowed:  warehouse-state-back:9091}")
-	List<String> allowedServices;
-	HashMap<String, String> mapServices; // key - service name, value - base URL
-	@Value("${app-localhost:true}")
-	boolean isLocalhost;
 	@Autowired
 	GatewayService gatewayService;
 

@@ -8,11 +8,15 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.*;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,17 +26,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import warehouse.dto.*;
-import warehouse.dto.container.*;
-import warehouse.dto.enums.*;
-import warehouse.dto.product.*;
+import warehouse.dto.InventoryDto;
+import warehouse.dto.MovementDocDto;
+import warehouse.dto.OrderDto;
+import warehouse.dto.container.CreatingContainerDto;
+import warehouse.dto.enums.OrderStatusEnum;
+import warehouse.dto.enums.TypeOfDocEnum;
+import warehouse.dto.product.CreatingProductDto;
+import warehouse.dto.product.IrreducibleBalanceSettingDto;
+import warehouse.dto.product.TransportSupplySettingDto;
 
-
+@ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
 @WebMvcTest(DtoTests.TestController.class) 
 @ContextConfiguration(classes=DtoTests.TestController.class) 
 
 public class DtoTests {
+	
 	public static @RestController class TestController {
 		static CreatingContainerDto containerExp;
 		static CreatingProductDto productExp;

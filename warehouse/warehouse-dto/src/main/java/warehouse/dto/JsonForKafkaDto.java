@@ -15,7 +15,7 @@ import warehouse.dto.enums.CreatingMethodEnum;
 @EqualsAndHashCode
 @Setter
 @Getter
-public class JsonForJournalingDto {
+public class JsonForKafkaDto {
 	private String className;;
-	private String jsonForJournaling;
+	private String jsonDto;
 }

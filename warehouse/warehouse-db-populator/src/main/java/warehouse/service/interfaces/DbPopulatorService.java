@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 
 import reactor.core.publisher.Mono;
 import warehouse.doc.WarehoseDoc;
-import warehouse.dto.JsonForJournalingDto;
+import warehouse.dto.JsonForKafkaDto;
 
 public interface DbPopulatorService {
-void saveDocInDb(JsonForJournalingDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException;
+void saveDocInDb(JsonForKafkaDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException;
 }

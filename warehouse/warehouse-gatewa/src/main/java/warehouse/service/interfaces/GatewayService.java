@@ -1,6 +1,5 @@
 package warehouse.service.interfaces;
 
-import java.security.Principal;
 
 import org.springframework.cloud.gateway.webflux.ProxyExchange;
 import org.springframework.http.HttpMethod;

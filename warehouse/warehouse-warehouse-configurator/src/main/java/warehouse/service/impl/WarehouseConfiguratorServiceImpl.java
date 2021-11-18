@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import warehouse.repo.*;
 import warehouse.service.interfaces.WarehouseConfiguratorService;
-import warehouse.dto.JsonForJournalingDto;
+import warehouse.dto.JsonForKafkaDto;
 import warehouse.dto.ParentDto;
 import warehouse.dto.container.*;
 import warehouse.dto.operator.*;
@@ -85,17 +85,17 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 	}
 
 	private <T> void sendDocDtoToNonsqlDB(T docDto) {
-		JsonForJournalingDto jsonForJournalingDto = new JsonForJournalingDto();
+		JsonForKafkaDto jsonForKafkaDto = new JsonForKafkaDto();
 		try {
 			String dtoForDocJson = objectMapper.writeValueAsString(docDto);
-			jsonForJournalingDto.setClassName(docDto.getClass().getName());
-			jsonForJournalingDto.setJsonForJournaling(dtoForDocJson);
+			jsonForKafkaDto.setClassName(docDto.getClass().getName());
+			jsonForKafkaDto.setJsonDto(dtoForDocJson);
 			log.debug("sendDocDtoToNonsqlDB: dtoForDocJson {}", dtoForDocJson);
 		} catch (JsonProcessingException e) {
 			log.debug("Object was not serialized");
 		}
 
-		streamBridge.send(dtoForDocBindingName, jsonForJournalingDto);
+		streamBridge.send(dtoForDocBindingName, jsonForKafkaDto);
 	}
 
 	@Override
@@ -103,6 +103,7 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 		log.debug("createAndSaveContainer: the dto {} recieved", dto.toString());
 		return Mono.create(s -> {
 			Container newContainer = Container.builder().address(dto.getAddress()).build();
+			log.debug("createAndSaveContainer: the newContainer {} built", newContainer.toString());
 			String errorMessage = String.format("Container with address %s already exist", dto.getAddress());
 			String successMessage = String.format("the container with address %s created successfully",
 					dto.getAddress());
