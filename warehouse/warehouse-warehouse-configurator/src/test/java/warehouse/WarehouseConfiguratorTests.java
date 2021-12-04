@@ -31,7 +31,7 @@ import java.util.Date;
 
 import javax.validation.constraints.NotEmpty;
 
-import warehouse.service.interfaces.WarehouseConfiguratorService;
+import warehouse.service.interfaces.TestGeneratorService;
 import warehouse.dto.JsonForKafkaDto;
 import warehouse.dto.ParentDto;
 import warehouse.dto.container.*;
@@ -61,7 +61,7 @@ public class WarehouseConfiguratorTests {
 	@Autowired
 	WebTestClient testClient;
 	@Autowired
-	WarehouseConfiguratorService service;
+	TestGeneratorService service;
 	@Autowired
 	ContainerWarehouseConfiguratorRepo containerRepo;
 	@Autowired

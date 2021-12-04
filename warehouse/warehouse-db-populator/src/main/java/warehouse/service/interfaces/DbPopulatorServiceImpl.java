@@ -24,13 +24,13 @@ public class DbPopulatorServiceImpl implements DbPopulatorService {
 
 	WarehoseDoc getDocFromJsonForKafkaDto(JsonForKafkaDto jsonForKafkaDto)
 			throws ClassNotFoundException, JsonMappingException, JsonProcessingException {
-		log.debug("getDocFromJsonForKafkaDto: jsonForKafkaDto {} received", jsonForKafkaDto);
+//		log.debug("getDocFromJsonForKafkaDto: jsonForKafkaDto {} received", jsonForKafkaDto);
 		String jsonDto = jsonForKafkaDto.getJsonDto();
 		Class<?> jsonDtoClass = Class.forName(jsonForKafkaDto.getClassName());
 		ParentDto dtoForDoc =  (ParentDto) mapper.readValue(jsonDto, jsonDtoClass);
 		WarehoseDoc doc = WarehoseDoc.builder().documentDateTime(LocalDateTime.now()).incomingDto(dtoForDoc)
 				.incomingDtoType(jsonDtoClass.getSimpleName()).build();
-		log.debug("getDocFromJsonForKafkaDto: doc {}", doc.toString());
+//		log.debug("getDocFromJsonForKafkaDto: doc {}", doc.toString());
 		return doc;
 	}
 
@@ -38,7 +38,7 @@ public class DbPopulatorServiceImpl implements DbPopulatorService {
 	public void saveDocInDb(JsonForKafkaDto jsonDto) throws JsonMappingException, ClassNotFoundException, JsonProcessingException {
 		WarehoseDoc doc = getDocFromJsonForKafkaDto(jsonDto);
 		repo.save(doc).subscribe(d->{
-			log.debug("saveDocInDb: doc {}", d.toString());		
+//			log.debug("saveDocInDb: doc {}", d.toString());		
 		});
 	}
 

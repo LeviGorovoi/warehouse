@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import warehouse.repo.*;
-import warehouse.service.interfaces.WarehouseConfiguratorService;
+import warehouse.service.interfaces.TestGeneratorService;
 import warehouse.dto.JsonForKafkaDto;
 import warehouse.dto.ParentDto;
 import warehouse.dto.container.*;
@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service(value = "wcs")
 @Slf4j
-public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorService {
+public class WarehouseConfiguratorServiceImpl implements TestGeneratorService {
 	@Value("${app-binding-name-docs:docs-out-0}")
 	String dtoForDocBindingName;
 	@Resource(name = "wcs")
@@ -58,7 +58,7 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 		try {
 			repo.save(newObj);
 			sendDocDtoToNonsqlDB(parentDto);
-			log.debug("saveMethod; dto {} by {} sent to NonSQLDB", parentDto, parentDto.getClass());
+//			log.debug("saveMethod; dto {} by {} sent to NonSQLDB", parentDto, parentDto.getClass());
 		} catch (DataIntegrityViolationException e) {
 			throw new DuplicatedException(errorMessage);
 		}
@@ -90,7 +90,7 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 			String dtoForDocJson = objectMapper.writeValueAsString(docDto);
 			jsonForKafkaDto.setClassName(docDto.getClass().getName());
 			jsonForKafkaDto.setJsonDto(dtoForDocJson);
-			log.debug("sendDocDtoToNonsqlDB: dtoForDocJson {}", dtoForDocJson);
+//			log.debug("sendDocDtoToNonsqlDB: dtoForDocJson {}", dtoForDocJson);
 		} catch (JsonProcessingException e) {
 			log.debug("Object was not serialized");
 		}
@@ -100,15 +100,15 @@ public class WarehouseConfiguratorServiceImpl implements WarehouseConfiguratorSe
 
 	@Override
 	public Mono<String> createAndSaveContainer(CreatingContainerDto dto) {
-		log.debug("createAndSaveContainer: the dto {} recieved", dto.toString());
+//		log.debug("createAndSaveContainer: the dto {} recieved", dto.toString());
 		return Mono.create(s -> {
 			Container newContainer = Container.builder().address(dto.getAddress()).build();
-			log.debug("createAndSaveContainer: the newContainer {} built", newContainer.toString());
+//			log.debug("createAndSaveContainer: the newContainer {} built", newContainer.toString());
 			String errorMessage = String.format("Container with address %s already exist", dto.getAddress());
 			String successMessage = String.format("the container with address %s created successfully",
 					dto.getAddress());
 			saveMethod(dto, containerRepo, newContainer, errorMessage);
-			log.debug("createAndSaveContainer: " + successMessage);
+//			log.debug("createAndSaveContainer: " + successMessage);
 			s.success(successMessage);
 		});
 

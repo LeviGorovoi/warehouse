@@ -46,13 +46,13 @@ import warehouse.dto.product.TransportSupplySettingDto;
 import warehouse.dto.role.ChangeRoleDto;
 import warehouse.dto.role.CreatingRoleDto;
 import warehouse.dto.role.OperatorToRoleSettingDto;
-import warehouse.service.interfaces.WarehouseConfiguratorService;
+import warehouse.service.interfaces.TestGeneratorService;
 
 @Service
 @Slf4j
 public class KafkaReceiver {	
 	@Autowired
-	WarehouseConfiguratorService service;
+	TestGeneratorService service;
 	
 	ObjectMapper mapper = new ObjectMapper();
 
@@ -64,7 +64,7 @@ public class KafkaReceiver {
 	
 	ParentDto getDocFromJsonForKafkaDto(JsonForKafkaDto jsonForKafkaDto)
 			throws ClassNotFoundException, JsonMappingException, JsonProcessingException {
-		log.debug("getDocFromJsonForKafkaDto: getDocFromJsonForKafkaDto {} received", jsonForKafkaDto);
+//		log.debug("getDocFromJsonForKafkaDto: getDocFromJsonForKafkaDto {} received", jsonForKafkaDto);
 		String jsonDto = jsonForKafkaDto.getJsonDto();
 		Class<?> jsonDtoClass = Class.forName(jsonForKafkaDto.getClassName());
 		ParentDto dto = (ParentDto) mapper.readValue(jsonDto, jsonDtoClass);

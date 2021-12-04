@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import reactor.core.publisher.Mono;
-import warehouse.service.interfaces.WarehouseConfiguratorService;
+import warehouse.service.interfaces.TestGeneratorService;
 import warehouse.dto.container.*;
 import warehouse.dto.operator.*;
 import warehouse.dto.product.*;
@@ -18,7 +18,7 @@ import javax.validation.Valid;
 
 public class WarehouseConfiguratorController {
 	@Autowired
-	WarehouseConfiguratorService service;
+	TestGeneratorService service;
 
 	@PostMapping(CONTAINER_CREATE)
 	Mono<String> createAndSaveContainer(@Valid @RequestBody CreatingContainerDto dto) {

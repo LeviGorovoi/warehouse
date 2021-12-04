@@ -7,7 +7,7 @@ import warehouse.dto.product.*;
 import warehouse.dto.role.*;
 
 
-public interface WarehouseConfiguratorService {
+public interface TestGeneratorService {
 Mono<String> createAndSaveContainer(CreatingContainerDto containerDto);
 Mono<String> changeContainerAddress(ChangeContainerAddressDto changeContainerAddressDto);
 Mono<String> setProductToContainer(ProductToContainerSettingDto containerPurposeSettingDto);

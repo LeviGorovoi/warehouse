@@ -48,5 +48,6 @@
 		<module>warehouse-config-server</module>
 		<module>warehouse-discovery-server</module>
 		<module>warehouse-loadbalancer</module>
+		<module>warehouse-test-generator</module>
 	</modules>
 </project>
